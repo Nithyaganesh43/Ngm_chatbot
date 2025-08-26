@@ -10,6 +10,7 @@ const allowedOrigins = [
   'http://localhost:5000',
   'http://localhost:5050',
   'http://localhost:8080',
+  'https://ngmchatbot.vercel.app',
 ];
 
 app.use(
@@ -357,3 +358,106 @@ app.listen(PORT, '0.0.0.0', () => {
 });
 })
   .catch((err) => console.error('❌ MongoDB error:', err));
+
+
+
+
+//base url https://ngmchatbot.onrender.com/ 
+//   /getchat response example
+//   [
+//     {
+//         "id": "68adf8c14e9cb297a2aa6879",
+//         "title": "Seating Arrangements",
+//         "created_at": "2025-08-26T18:11:13.512Z",
+//         "conversations": [
+//             {
+//                 "id": "68adf8c14e9cb297a2aa687b",
+//                 "role": "user",
+//                 "message": "I need the syllabus for cse",
+//                 "created_at": "2025-08-26T18:11:13.755Z"
+//             },
+//             {
+//                 "id": "68adf8c14e9cb297a2aa687c",
+//                 "role": "AI",
+//                 "message": "The college has a rich history of academic excellence and student development programs.",
+//                 "created_at": "2025-08-26T18:11:13.756Z"
+//             }
+//         ]
+//     },
+//     {
+//         "id": "68adf4365e4ac03833a42491",
+//         "title": "Seating Arrangements",
+//         "created_at": "2025-08-26T17:51:50.837Z",
+//         "conversations": [
+//             {
+//                 "id": "68adf4365e4ac03833a42493",
+//                 "role": "user",
+//                 "message": "I need the syllabus for cse",
+//                 "created_at": "2025-08-26T17:51:50.913Z"
+//             },
+//             {
+//                 "id": "68adf4365e4ac03833a42494",
+//                 "role": "AI",
+//                 "message": "Nallamuthu Gounder Mahalingam College (NGMC), located in Pollachi, is an esteemed institution known for its dedication to quality education and research. It offers a variety of undergraduate and postgraduate courses across diverse fields such as Computer Science, Mathematics, Information Technology, Commerce, Business Administration, and more.",
+//                 "created_at": "2025-08-26T17:51:50.913Z"
+//             },
+//             {
+//                 "id": "68adf4585e4ac03833a4249a",
+//                 "role": "user",
+//                 "message": "What i said before?",
+//                 "created_at": "2025-08-26T17:52:24.332Z"
+//             },
+//             {
+//                 "id": "68adf4585e4ac03833a4249b",
+//                 "role": "AI",
+//                 "message": "Sure, I can help you with that information. You might also find this useful: [UG-5TT-F_N-TEST-I-AUGUST-2025](https://coe.ngmc.ac.in/wp-content/uploads/files/timetable/UG-5TT-F_N-TEST-I-AUGUST-2025.pdf)",
+//                 "created_at": "2025-08-26T17:52:24.332Z"
+//             },
+//             {
+//                 "id": "68adf4645e4ac03833a4249e",
+//                 "role": "user",
+//                 "message": "This is mock",
+//                 "created_at": "2025-08-26T17:52:36.219Z"
+//             },
+//             {
+//                 "id": "68adf4645e4ac03833a4249f",
+//                 "role": "AI",
+//                 "message": "NGMC provides state-of-the-art infrastructure and modern laboratories for practical learning.",
+//                 "created_at": "2025-08-26T17:52:36.219Z"
+//             }
+//         ]
+//     },
+//     {
+//         "id": "68adf42f5e4ac03833a4248c",
+//         "title": "Student Services",
+//         "created_at": "2025-08-26T17:51:43.796Z",
+//         "conversations": [
+//             {
+//                 "id": "68adf42f5e4ac03833a4248e",
+//                 "role": "user",
+//                 "message": "I need the syllabus for cse",
+//                 "created_at": "2025-08-26T17:51:43.893Z"
+//             },
+//             {
+//                 "id": "68adf42f5e4ac03833a4248f",
+//                 "role": "AI",
+//                 "message": "Visit our website: https://www.ngmc.org",
+//                 "created_at": "2025-08-26T17:51:43.894Z"
+//             }
+//         ]
+//     }
+// ]
+
+
+//  /postchat/ response example
+// {
+//     "chatId": "68adf9194e9cb297a2aa6882",
+//     "reply": "We offer both undergraduate and postgraduate programs in multiple disciplines including Engineering, Arts, Science, and Management.",
+//     "title": "Seating Arrangements"
+// }
+
+//   /postchat/:chat_id/ response example
+//  {
+//     "chatId": "68adf4365e4ac03833a42491",
+//     "reply": "Please check our official website for more details. You might also find this useful: [UG-3TT-F_N-TEST-I-AUGUST-2025](https://coe.ngmc.ac.in/wp-content/uploads/files/timetable/UG-3TT-F_N-TEST-I-AUGUST-2025.pdf)"
+// }
