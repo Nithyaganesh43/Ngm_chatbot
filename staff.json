@@ -1,0 +1,1122 @@
+{
+    "Dept of Comp. Science": [
+        {
+            "name": "Dr.R.Manickachezian",
+            "designation": "Principal"
+        }
+    ],
+    "Department of Tamil": [
+        {
+            "name": "Dr.P.Maheshwari",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.K.Dhanalakshmi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.A.Mahalakshmi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr P.Aruljothi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. A.Mahabobu",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.P.Maheshwari",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "Department of English": [
+        {
+            "name": "Dr.S.Muthukumaravel",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.Suja Mathew",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.A.Srividhya",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.S.Mariammal",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms.G.Devikarpagam",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms.T.V.Sri Vaishnavi Devi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mr.S.Lakshmanan",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.M.Sangeetha",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. K.S.Parimaladevi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mr. K.M.Mohankumar",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mr. M.Lakshmanan",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. Greeshmavijay",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "Department of History": [
+        {
+            "name": "Dr.K.Mangayarkarasi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mr.G.Ramanathan",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. R.Somasundaram",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. P.Gayathri",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.P.P. Ramya",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "Department of Economics": [
+        {
+            "name": "Dr.P.Krishnathulasimani",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Mr.N.Anbuarasu",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mr.K.Murugavelu",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.Nirrmala sathish",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr S.Padmasundari",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "PG & Research Department of Commerce": [
+        {
+            "name": "Dr.P.Bruntha",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.R.Manikandan",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.S.Shanmugapriya",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.M.Chithirai Selvan",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. G.Gnanaselvi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. P.V.Nandhini",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. P.Karthika",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. S.Mahalakshmi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. P.Anitha",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "PG & Research Department of Mathematics": [
+        {
+            "name": "Dr.V.Inthumathi",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.J.Jayasudha",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.R.Santhi",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.V.Chitra",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.S.Sivasankar",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Mr.P.Siravanan",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.S.Kaleeswari",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. A.Gnanasoundari",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr M.Maheswari",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr N.Selvanayaki",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "Department of Physics": [
+        {
+            "name": "Dr.T.E.Manjulavalli",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Ms.N.Revathi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.M.Karthika",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.S.Shanmugapriya",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.A.Sureshkumar",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. S.Yogeshwari",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mr. T.Ponraj",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. M.Gayathri",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. A.G.Kannan",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. V. Saravanan",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. K. Somasundaram",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "Department of Chemistry": [
+        {
+            "name": "Dr.Indhumathy Ramasamy",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.M.Amutha",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr T.Gowrani",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. R.Sudha",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr M.Selladurai",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr N.Neelakandeswari",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "Department of Botany": [
+        {
+            "name": "Dr.R.Kannan",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.M.Latha Isabel",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.A.Logamadevi",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.K.Rajalakshmi",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.E.Neelamathi",
+            "designation": "Assistant professor"
+        }
+    ],
+    "Department of Zoology": [
+        {
+            "name": "Dr.S.Somasundaram",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr M.Durairaju",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr. S.Mariselvi",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms. S.Jayalakshmi",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr. S.Christopher",
+            "designation": "Assistant professor"
+        }
+    ],
+    "Department of Computer Science": [
+        {
+            "name": "Dr.Antony Selvadoss Thanamani",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.R.Manickachezian",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Mr.K.Srinivasan",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.Aruchamy Rajini",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr. M.Malathi",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.M.Latha",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr. M. Sakthi",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr. R. Nandhakumar",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr. R. Deepa",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "M. Dhavapriya",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr. S. Sharmila",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms. M. Meena Krithika",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms. S. S. Shanthi",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Mr. N. Arul Kumar",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr. A. Kanagaraj",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms. P. Jayapriya",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms. G. Angayarkanni",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.M.Rathamani",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr. A. Krishnakumar",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms. R. Shiddharthy",
+            "designation": "Assistant professor"
+        }
+    ],
+    "Department of Tamil Language": [
+        {
+            "name": "Dr. T.Parameshwari",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr. T.Geethanjali",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr. .R.Vishnupriya",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.M.Chitrakala",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.N. Prakash",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr..N.Jayasudha",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr. R. Jayanthi",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Prof. R. Suriya",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr. R. Dhivya",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.P.Karthick",
+            "designation": "Assistant professor"
+        }
+    ],
+    "Department of Hindi Language": [
+        {
+            "name": "Ms. D. Dhirowpathi",
+            "designation": "Assistant professor"
+        }
+    ],
+    "Department of English Language": [
+        {
+            "name": "Dr.N.RADHA",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.R.Kiruthiga",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.P.Kalaivani",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.P.Mariammal",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.M.Nandhagopu",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.A.Velumani",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.T.Suriyaprabha",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.G.Mahalakshmi",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.Saranya Devi.M",
+            "designation": "Assistant professor"
+        }
+    ],
+    "UG Department of CSc with DA": [
+        {
+            "name": "Dr. E. Rama Devi",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.K.Thilagam",
+            "designation": "Assistant professor"
+        }
+    ],
+    "UG Department of CSc with AI & ML": [
+        {
+            "name": "Dr.S.Niraimathi",
+            "designation": "Associate professor"
+        },
+        {
+            "name": "Mr. Vignesh. L",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.B.Azhagusundari",
+            "designation": "Associate professor"
+        }
+    ],
+    "UG Department of Computer Applications": [
+        {
+            "name": "Dr. K. Haridas",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr. D. Umamaheswari",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.R.MalathiRavindran",
+            "designation": "Associate professor"
+        },
+        {
+            "name": "Mr. S.DilipKumar",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.N.Divya",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mr.A.Muruganandham",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mr.D.Poobathi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.T.Sumathi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms.B.Kousalya Devi",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "UG Department of Mathematics": [
+        {
+            "name": "Mr S.Earnest Rajadurai",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mr.R.Abin Prakash",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "UG Department of Information Technology": [
+        {
+            "name": "K.Vijayakumar",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "R.Sekar",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "C.R.Durga devi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "B. Kalaiselvi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "V.Prabavathi",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "UG Department of Commerce": [
+        {
+            "name": "Dr.N.Bagyalakshmi",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Ms.G.Nithya",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.S.Kaleeswari",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.N.Giri",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.Ahila.D",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms.V.Ruba",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.V.Suresh kumar",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.T.S.Kavitha",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.R.Senthilkumar",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "UG Department of Business Administration": [
+        {
+            "name": "Mr. D. Bhuvanendran",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. T. Manikandan",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. R. Visalakshi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. U. Thaslim Ariff",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms S.Kalamani",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. M. Manjuladevi",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "UG Department of  E-Commerce": [
+        {
+            "name": "Dr.M.V.Sathiyabama",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr.R.Vidwakalyani",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.B.Indirapriyadharshini",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.T.Kiruthika",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms.M.Ragaprabha",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "UG Department of Commerce Finance": [
+        {
+            "name": "Dr.G.Akilandeswari",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Mrs.R.Amsaveni",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Mrs.S.Kokilavizhi",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.E.Renuga",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.D.Divya",
+            "designation": "Assistant professor"
+        }
+    ],
+    "UG Department of English": [
+        {
+            "name": "Mr. Koteeswaran . S",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. Amutha.G",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "UG Department of Computer Technology": [
+        {
+            "name": "Dr.M.Rajasenathipathi",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Ms.C. Keerthana",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms.K.S. Leelavathi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.R. Jayaprakash",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms.A. Kalaivani",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "UG Department of Commerce Professional Accounting": [
+        {
+            "name": "Dr. S. B. Gayathri",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr. D. Rajasekaran",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. N. Sumathi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. J. Madhubala",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.D.Padma",
+            "designation": "Associate Professor"
+        }
+    ],
+    "UG Department of Commerce Banking & Insurance": [
+        {
+            "name": "Ms. M. Jeeva",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Ms. A. Anandhiprabha",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. A. Gomathi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. V. Poornima",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms.M. Shanmugapriya",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "UG Department of Commerce Business Process Services": [
+        {
+            "name": "Dr. M. Akilanayaki",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. T. Mohanasundari",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. T. Gurusamy",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.V. Meera",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr. R. Sivarajan",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "PG Department of Tamil": [
+        {
+            "name": "Dr. T.Rajkumar",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr. S.Selvakumar",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. A.Sivanartselvi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. T.Pushparani",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. V.Parimalam",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.M.Gayathri",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.P.Prathap",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "PG Department of English": [
+        {
+            "name": "T. Sumithra",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "R. Sudha",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "P. Dhanagopalan",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "P. A. Francia",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "PG Department of Chemistry": [
+        {
+            "name": "Dr.K.Poonkodi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mrs.K.Vimaladevi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mrs. R. Mini",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.V.Prabhu",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mrs.M.Anusuya",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. M. Velayutham Pillai",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "PG Department of Botany": [
+        {
+            "name": "Dr. R. Rakkimuthu",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. P. Sathishkumar",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. A.M. Anandakumar",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mrs. D. Sowmiya",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "PG & UG  Commerce  International Business": [
+        {
+            "name": "Dr G Vignesh",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr N. Bhuvaneshkumar",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Mr. B. Madhankumar",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mr. M. Prem",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. B. Rohini",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr. R. Gayathri",
+            "designation": "Associate Professor"
+        },
+        {
+            "name": "Dr. N. Ponsabariraj",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mrs. P. Sudha",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. S. Pratheepa",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "PG Department of Commerce with Computer Applications": [
+        {
+            "name": "Dr.P.Anitha",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.S.Poongodi",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.P.Jayanthi",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.P.Archanaa",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.T.Vijayachithra",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.P.Gomathi Devi",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Dr.M.Deepa",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.M.Shanmugapriya",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.R.Ramya",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Mr.A.Prakalathan",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms. D. Saranya",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.M.Nirmala",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.P.Divyabharathi",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.M.Gayathri",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.M.Kesavy",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.R.Subhasangeetha",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Mr.S.Rajagopalan",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.Muthukannu",
+            "designation": "Assistant professor"
+        }
+    ],
+    "UG & PG Department of Social work": [
+        {
+            "name": "Dr.L.Ranjit",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms.T.Sivaranjane",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Mr.S.Vignesh Kumar",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.B.V.Nithi Varshini Devi",
+            "designation": "Assistant professor"
+        },
+        {
+            "name": "Ms.A.Nandhini",
+            "designation": "Assistant professor"
+        }
+    ],
+    "Department of Human Excellence": [
+        {
+            "name": "Ms. S.Jeyalakshmi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Thiru. N.Panneerselvam",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Dr.P.Veerasithi vinayagan",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. S.Shanmugavadivu",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Thiru. V.Settu",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. S.Maheswari",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. P.Padma",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. D.Gnana soundari",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. K.Santhi",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. S.Jagadambal",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "Academy for Professional Development": [
+        {
+            "name": "Mr. Ganeshan P. Arumugam",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Mr.M.Lingaraj",
+            "designation": "Assistant Professor"
+        },
+        {
+            "name": "Ms. E. Gayathri",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "Physical Education": [
+        {
+            "name": "Dr R.Ashok Kumar",
+            "designation": "Physical Director"
+        },
+        {
+            "name": "Ms. C. Bhuvaneswari",
+            "designation": "Assistant Physical Director"
+        },
+        {
+            "name": "Mr. P. Kithiyon",
+            "designation": "Assistant Physical Director"
+        }
+    ],
+    "Placement & Training Officer": [
+        {
+            "name": "Mr.R. Prabakaran",
+            "designation": "Training & Placement officer"
+        }
+    ],
+    "Library": [
+        {
+            "name": "Dr S.Vijayakumar",
+            "designation": "Librarian"
+        }
+    ],
+    "Fluency": [
+        {
+            "name": "Mr.P.Peter",
+            "designation": "Fluency Trainer"
+        },
+        {
+            "name": "Mr.M.Henry Narwil",
+            "designation": "Assistant Professor"
+        }
+    ],
+    "Dean Academic": [
+        {
+            "name": "Dr.S.Saravana Babu",
+            "designation": "Dean Academic"
+        }
+    ],
+    "Dean Research": [
+        {
+            "name": "Dr.S.Umapathy",
+            "designation": "Dean Research"
+        }
+    ]
+}
