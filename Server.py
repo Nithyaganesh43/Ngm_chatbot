@@ -241,6 +241,7 @@ def post_chat(request):
     if err: 
         return JsonResponse({"error": err}, status=400)
     
+    
     prompt = f"{ENHANCED_SYSTEM_PROMPT}\nUser Query: {user_message}\nOutput JSON with reply and title only"
     messages = [{"role":"system","content":prompt},{"role":"user","content":user_message}]
     gpt_resp = call_chatgpt(messages)
