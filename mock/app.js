@@ -4,9 +4,27 @@ const cors = require('cors');
 require('dotenv').config();
 const app = express();
 app.use(express.json());
-app.use(cors(
-    {origin: 'http://localhost:3000', optionsSuccessStatus: 200}
-));
+
+const allowedOrigins = [
+  'http://localhost:3000',
+  'http://localhost:5000',
+  'http://localhost:5050',
+  'http://localhost:8080',
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error('Not allowed by CORS'));
+      }
+    },
+    optionsSuccessStatus: 200,
+  })
+);
+
 
 // MongoDB Models
 const chatSchema = new mongoose.Schema({
