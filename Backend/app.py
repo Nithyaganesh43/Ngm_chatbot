@@ -328,6 +328,11 @@ def post_chat(request):
 
 @csrf_exempt
 @auth_required
+def checkAuth(request): 
+    return JsonResponse({ "status": "Authorized" })
+
+@csrf_exempt
+@auth_required
 def continue_chat(request, chat_id):
     if request.method != 'POST': 
         return JsonResponse({"error":"POST required"}, status=405)
@@ -394,6 +399,7 @@ def get_chats(request):
 
 # URL patterns
 urlpatterns = [
+    path('checkauth/', checkAuth),
     path('postchat/', post_chat),
     path('postchat/<str:chat_id>/', continue_chat),
     path('getchat/', get_chats),
