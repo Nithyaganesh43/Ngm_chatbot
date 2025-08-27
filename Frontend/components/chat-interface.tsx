@@ -450,7 +450,7 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
                   <Button
                     key={index}
                     variant="link"
-                    className="text-blue-500 hover:text-blue-400 underline p-0 h-auto font-normal text-sm inline mx-1 break-all max-w-full"
+                    className="text-blue-500 hover:text-blue-400 underline p-0 h-auto font-normal text-sm inline break-all max-w-full"
                     onClick={() => handlePdfClick(part.url, part.title)}>
                     <span className="break-words">{part.title}</span>
                   </Button>
@@ -460,7 +460,7 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
                   <Button
                     key={index}
                     variant="link"
-                    className="text-blue-500 hover:text-blue-400 underline p-0 h-auto font-normal text-sm inline mx-1 break-all max-w-full"
+                    className="text-blue-500 hover:text-blue-400 underline p-0 h-auto font-normal text-sm inline break-all max-w-full"
                     onClick={() =>
                       window.open(part.url, '_blank', 'noopener,noreferrer')
                     }>
@@ -469,7 +469,34 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
                 );
               }
             } else {
-              return <span key={index}>{formatText(part.content)}</span>;
+              const lines = part.content.split('\n');
+              return (
+                <span key={index}>
+                  {lines.map((line, lineIndex) => {
+                    const boldParts = line.split(/(\*\*[^*]+\*\*)/g);
+                    return (
+                      <span key={lineIndex}>
+                        {lineIndex > 0 && <br />}
+                        {boldParts.map((boldPart, boldIndex) => {
+                          if (
+                            boldPart.startsWith('**') &&
+                            boldPart.endsWith('**') &&
+                            boldPart.length > 4
+                          ) {
+                            const boldText = boldPart.slice(2, -2);
+                            return (
+                              <strong key={boldIndex} className="font-semibold">
+                                {boldText}
+                              </strong>
+                            );
+                          }
+                          return boldPart;
+                        })}
+                      </span>
+                    );
+                  })}
+                </span>
+              );
             }
           })}
         </div>
