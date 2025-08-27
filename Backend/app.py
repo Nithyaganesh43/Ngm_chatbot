@@ -64,21 +64,18 @@ class Conversation(models.Model):
         app_label = '__main__'
         db_table = 'conversation'
 
-# Create tables function
-def create_tables():
-    """Create database tables if they don't exist"""
-    with connection.cursor() as cursor: 
-         
+
+def ensure_tables():
+    with connection.cursor() as cursor:
         cursor.execute("""
-            CREATE TABLE chat (
+            CREATE TABLE IF NOT EXISTS chat (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 title VARCHAR(255) NOT NULL,
                 created_at DATETIME NOT NULL
             )
         """)
-         
         cursor.execute("""
-            CREATE TABLE conversation (
+            CREATE TABLE IF NOT EXISTS conversation (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 chat_id INTEGER NOT NULL,
                 role VARCHAR(10) NOT NULL,
@@ -87,9 +84,8 @@ def create_tables():
                 FOREIGN KEY (chat_id) REFERENCES chat(id) ON DELETE CASCADE
             )
         """)
-    
-    print("Database tables created successfully!")
- 
+
+ensure_tables()
 
 # OpenAI client
 client = OpenAI(api_key=os.environ.get("CHAT_GPT_API"))
@@ -378,7 +374,7 @@ if __name__ == '__main__':
     from django.core.management.commands.runserver import Command as runserver
     runserver.default_addr = "0.0.0.0"
     runserver.default_port = os.environ.get("PORT", "8000")
-    
+    ensure_tables()
     print("Starting NGMC Chatbot Server...")
     print(f"Server will start at http://0.0.0.0:{runserver.default_port}")
     print("Database initialized successfully!")
