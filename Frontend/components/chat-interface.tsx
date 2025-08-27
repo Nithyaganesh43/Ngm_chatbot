@@ -64,7 +64,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     initializeSpeechRecognition();
   }, []);
 
-  // Initialize Speech Recognition
   const initializeSpeechRecognition = () => {
     if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
       const SpeechRecognition =
@@ -93,10 +92,8 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
           }
         }
 
-        // Update the message state with the final transcript
         if (finalTranscript) {
           setMessage((prev) => {
-            // If there's existing text, add a space before the new transcript
             const newText = prev
               ? prev + ' ' + finalTranscript
               : finalTranscript;
@@ -104,10 +101,8 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
           });
         }
 
-        // Show interim results in real-time by temporarily updating the input
         if (interimTranscript && !finalTranscript) {
           const currentValue = message || '';
-          // This creates a visual feedback of what's being spoken
           setMessage(
             currentValue + (currentValue ? ' ' : '') + interimTranscript
           );
@@ -146,7 +141,7 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
       recognition.stop();
       setIsListening(false);
     } else {
-      setError(''); // Clear any previous errors
+      setError('');
       recognition.start();
     }
   };
@@ -173,13 +168,11 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     }
   };
 
-  // Updated function to extract PDF URLs from both formats
   const extractPdfUrls = (
     text: string
   ): Array<{ url: string; title: string }> => {
     const pdfs: Array<{ url: string; title: string }> = [];
 
-    // Format 1: [title](url) - standard markdown
     const markdownRegex = /\[([^\]]+)\]\(([^)]+\.pdf)\)/g;
     let match;
     while ((match = markdownRegex.exec(text)) !== null) {
@@ -189,7 +182,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
       });
     }
 
-    // Format 2: [title]$$(url)$$ - custom format (keeping for backward compatibility)
     const customRegex = /\[([^\]]+)\]$$(https?:\/\/[^)]+\.pdf)$$/g;
     while ((match = customRegex.exec(text)) !== null) {
       pdfs.push({
@@ -201,49 +193,15 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     return pdfs;
   };
 
-  // Function to extract all URLs from text (not just PDFs)
-  const extractAllUrls = (
-    text: string
-  ): Array<{ url: string; title?: string }> => {
-    const urls: Array<{ url: string; title?: string }> = [];
-
-    // Format 1: [title](url) - standard markdown
-    const markdownRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
-    let match;
-    while ((match = markdownRegex.exec(text)) !== null) {
-      urls.push({
-        title: match[1],
-        url: match[2],
-      });
-    }
-
-    // Format 2: Plain URLs (http/https)
-    const plainUrlRegex = /(https?:\/\/[^\s\]]+)/g;
-    const textWithoutMarkdown = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, ''); // Remove markdown links first
-    while ((match = plainUrlRegex.exec(textWithoutMarkdown)) !== null) {
-      // Only add if it's not already captured as markdown
-      const url = match[1];
-      if (!urls.some((existing) => existing.url === url)) {
-        urls.push({
-          url: url,
-        });
-      }
-    }
-
-    return urls;
-  };
-
   const handlePdfClick = (url: string, title: string) => {
     setPdfUrl(url);
     setPdfTitle(title);
     setShowPdfViewer(true);
   };
 
-  // Function to auto-open PDF if AI message contains PDF links
   const autoOpenPdf = (message: string) => {
     const pdfs = extractPdfUrls(message);
     if (pdfs.length > 0) {
-      // Auto-open the first PDF found
       handlePdfClick(pdfs[0].url, pdfs[0].title);
     }
   };
@@ -251,7 +209,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
   const handleSendMessage = async () => {
     if (!message.trim() || isLoading) return;
 
-    // Stop voice recognition if it's running
     if (isListening && recognition) {
       recognition.stop();
     }
@@ -259,7 +216,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     const userMessage = message.trim();
     setMessage('');
 
-    // Add user message immediately to show it before "thinking"
     const tempUserMessage: Message = {
       id: `temp-${Date.now()}`,
       role: 'user',
@@ -268,7 +224,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     };
 
     if (currentChat) {
-      // For existing chats, add to current chat
       setCurrentChat((prev) =>
         prev
           ? {
@@ -278,7 +233,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
           : null
       );
     } else {
-      // For new chats, create a temporary chat structure to show the message
       const tempChat: Chat = {
         id: `temp-chat-${Date.now()}`,
         title: 'New Chat',
@@ -294,14 +248,12 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     try {
       let response;
       if (currentChat) {
-        // Continue existing chat
         response = await fetch(`${API_BASE_URL}/postchat/${currentChat.id}/`, {
           method: 'POST',
           headers: getAuthHeaders(),
           body: JSON.stringify({ message: userMessage }),
         });
       } else {
-        // Create new chat
         response = await fetch(`${API_BASE_URL}/postchat/`, {
           method: 'POST',
           headers: getAuthHeaders(),
@@ -312,12 +264,10 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
       if (response.ok) {
         const data = await response.json();
 
-        // Reload chats to get updated data
         await loadChats();
 
         let updatedChat = null;
 
-        // Set current chat if it's a new one
         if (!currentChat && data.chatId) {
           const updatedChats = await fetch(`${API_BASE_URL}/getchat/`, {
             headers: getAuthHeaders(),
@@ -330,7 +280,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
             updatedChat = newChat;
           }
         } else if (currentChat && !currentChat.id.startsWith('temp-chat-')) {
-          // Update existing chat with new messages (only if it's not a temp chat)
           const updatedChats = await fetch(`${API_BASE_URL}/getchat/`, {
             headers: getAuthHeaders(),
           }).then((res) => res.json());
@@ -346,7 +295,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
           currentChat.id.startsWith('temp-chat-') &&
           data.chatId
         ) {
-          // Replace temp chat with real chat
           const updatedChats = await fetch(`${API_BASE_URL}/getchat/`, {
             headers: getAuthHeaders(),
           }).then((res) => res.json());
@@ -359,7 +307,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
           }
         }
 
-        // Check if the latest AI message contains PDF links and auto-open
         if (updatedChat && updatedChat.conversations.length > 0) {
           const latestMessage =
             updatedChat.conversations[updatedChat.conversations.length - 1];
@@ -369,13 +316,10 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
         }
       } else {
         setError('Failed to send message. Please try again.');
-        // Remove temporary user message on error
         if (currentChat) {
           if (currentChat.id.startsWith('temp-chat-')) {
-            // If it's a temp chat, reset to no chat
             setCurrentChat(null);
           } else {
-            // If it's a real chat, just remove temp messages
             setCurrentChat((prev) =>
               prev
                 ? {
@@ -392,13 +336,10 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     } catch (error) {
       console.error('Send message failed:', error);
       setError('Network error. Please check your connection.');
-      // Remove temporary user message on error
       if (currentChat) {
         if (currentChat.id.startsWith('temp-chat-')) {
-          // If it's a temp chat, reset to no chat
           setCurrentChat(null);
         } else {
-          // If it's a real chat, just remove temp messages
           setCurrentChat((prev) =>
             prev
               ? {
@@ -421,7 +362,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     setShowPdfViewer(false);
     setPdfUrl('');
     setPdfTitle('');
-    // Stop voice recognition if it's running
     if (isListening && recognition) {
       recognition.stop();
     }
@@ -432,25 +372,20 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     setShowPdfViewer(false);
     setPdfUrl('');
     setPdfTitle('');
-    // Stop voice recognition if it's running
     if (isListening && recognition) {
       recognition.stop();
     }
   };
 
-  // Function to parse and format text with newlines and bold text
   const formatText = (text: string) => {
-    // Split by newlines first
     const lines = text.split('\n');
 
     return lines.map((line, lineIndex) => {
-      // Process each line for bold text
       const parts = line.split(/(\*\*[^*]+\*\*)/g);
 
       return (
         <div key={lineIndex} className={lineIndex > 0 ? 'mt-2' : ''}>
           {parts.map((part, partIndex) => {
-            // Check if part is bold (wrapped with **)
             if (
               part.startsWith('**') &&
               part.endsWith('**') &&
@@ -472,88 +407,70 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
 
   const renderMessage = (msg: Message) => {
     if (msg.role === 'AI') {
-      let processedMessage = msg.message;
+      const markdownLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+      const parts = [];
+      let lastIndex = 0;
+      let match;
 
-      // Extract all URLs (PDFs and regular links)
-      const allUrls = extractAllUrls(msg.message);
-      const pdfs = extractPdfUrls(msg.message);
+      while ((match = markdownLinkRegex.exec(msg.message)) !== null) {
+        if (match.index > lastIndex) {
+          const textBefore = msg.message.slice(lastIndex, match.index);
+          parts.push({ type: 'text', content: textBefore });
+        }
 
-      // Create replacements map for all links
-      const linkReplacements = new Map();
+        const title = match[1];
+        const url = match[2];
+        const isPdf = url.toLowerCase().includes('.pdf');
 
-      allUrls.forEach((urlData, index) => {
-        const isPdf = urlData.url.toLowerCase().includes('.pdf');
-        const uniqueId = `LINK_${index}_${(
-          urlData.title || urlData.url
-        ).replace(/[^a-zA-Z0-9]/g, '_')}`;
-
-        linkReplacements.set(uniqueId, {
-          ...urlData,
-          isPdf,
+        parts.push({
+          type: 'link',
+          title: title,
+          url: url,
+          isPdf: isPdf,
         });
 
-        // Replace markdown links
-        if (urlData.title) {
-          const markdownPattern = `[${urlData.title}](${urlData.url})`;
-          processedMessage = processedMessage.replace(
-            markdownPattern,
-            `__${uniqueId}__`
-          );
-        } else {
-          // Replace plain URLs
-          processedMessage = processedMessage.replace(
-            urlData.url,
-            `__${uniqueId}__`
-          );
-        }
-      });
+        lastIndex = match.index + match[0].length;
+      }
 
-      // Split the message and render links as clickable buttons
-      const parts = processedMessage.split(/(__LINK_\d+_[^_]+(?:_[^_]+)*__)/g);
+      if (lastIndex < msg.message.length) {
+        const textAfter = msg.message.slice(lastIndex);
+        parts.push({ type: 'text', content: textAfter });
+      }
+
+      if (parts.length === 0) {
+        parts.push({ type: 'text', content: msg.message });
+      }
 
       return (
         <div className="text-sm leading-relaxed">
           {parts.map((part, index) => {
-            const linkMatch = part.match(/__([^_]+(?:_[^_]+)*)__/);
-            if (linkMatch && linkReplacements.has(linkMatch[1])) {
-              const linkData = linkReplacements.get(linkMatch[1]);
-
-              if (linkData.isPdf) {
-                // Handle PDF links with PDF viewer
+            if (part.type === 'link') {
+              if (part.isPdf) {
                 return (
                   <Button
                     key={index}
                     variant="link"
                     className="text-blue-500 hover:text-blue-400 underline p-0 h-auto font-normal text-sm inline mx-1 break-all max-w-full"
-                    onClick={() =>
-                      handlePdfClick(
-                        linkData.url,
-                        linkData.title || 'PDF Document'
-                      )
-                    }>
-                    <span className="break-words">
-                      {linkData.title || linkData.url}
-                    </span>
+                    onClick={() => handlePdfClick(part.url, part.title)}>
+                    <span className="break-words">{part.title}</span>
                   </Button>
                 );
               } else {
-                // Handle regular links - open in new tab
                 return (
                   <Button
                     key={index}
                     variant="link"
                     className="text-blue-500 hover:text-blue-400 underline p-0 h-auto font-normal text-sm inline mx-1 break-all max-w-full"
                     onClick={() =>
-                      window.open(linkData.url, '_blank', 'noopener,noreferrer')
+                      window.open(part.url, '_blank', 'noopener,noreferrer')
                     }>
-                    <span className="break-words">
-                      {linkData.title || linkData.url}
-                    </span>
+                    <span className="break-words">{part.title}</span>
                   </Button>
                 );
               }
+            } else {
+              return <span key={index}>{formatText(part.content)}</span>;
             }
-            return <div key={index}>{formatText(part)}</div>;
           })}
         </div>
       );
@@ -566,9 +483,7 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
 
   return (
     <div className="flex h-screen bg-background text-foreground">
-      {/* Sidebar */}
       <div className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col h-screen">
-        {/* Header */}
         <div className="p-4 border-b border-sidebar-border flex-shrink-0">
           <div className="flex items-center gap-3 mb-4">
             <img
@@ -589,7 +504,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
           </Button>
         </div>
 
-        {/* Chat History */}
         <div className="flex-1 min-h-0 overflow-hidden">
           <ScrollArea className="h-full p-2">
             <div className="space-y-1">
@@ -606,7 +520,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
           </ScrollArea>
         </div>
 
-        {/* User Profile */}
         <div className="p-4 border-t border-sidebar-border flex-shrink-0">
           <div className="flex items-center gap-3">
             <Avatar className="h-8 w-8">
@@ -630,15 +543,13 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
         </div>
       </div>
 
-      {/* Main Chat Area */}
       <div className={`flex-1 flex flex-col ${showPdfViewer ? 'w-1/2' : ''}`}>
-        {/* Messages */}
         <div className="flex-1 overflow-hidden">
           <ScrollArea className="h-full p-4">
             {currentChat ? (
               <div className="space-y-6 max-w-3xl mx-auto pb-4">
                 {currentChat.conversations
-                  .filter((msg) => !msg.id.startsWith('temp-')) // Filter out temp messages from API data
+                  .filter((msg) => !msg.id.startsWith('temp-'))
                   .map((msg) => (
                     <div
                       key={msg.id}
@@ -672,12 +583,10 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
                       </div>
                     </div>
                   ))}
-                {/* Show temporary user message and loading state */}
                 {currentChat.conversations.some((msg) =>
                   msg.id.startsWith('temp-')
                 ) && (
                   <>
-                    {/* Temporary user message */}
                     {currentChat.conversations
                       .filter((msg) => msg.id.startsWith('temp-'))
                       .map((msg) => (
@@ -698,7 +607,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
                           </div>
                         </div>
                       ))}
-                    {/* Loading state */}
                     {isLoading && (
                       <div className="flex gap-4">
                         <Avatar className="h-8 w-8 mt-1 flex-shrink-0">
@@ -718,7 +626,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
                     )}
                   </>
                 )}
-                {/* Loading state for first message */}
                 {!currentChat.conversations.some((msg) =>
                   msg.id.startsWith('temp-')
                 ) &&
@@ -754,7 +661,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
           </ScrollArea>
         </div>
 
-        {/* Input Area */}
         <div className="p-4 border-t border-border flex-shrink-0">
           <div className="max-w-3xl mx-auto">
             {error && (
@@ -811,7 +717,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
         </div>
       </div>
 
-      {/* PDF Viewer Partition */}
       {showPdfViewer && (
         <div className="w-1/2 border-l border-border bg-card flex flex-col">
           <div className="p-4 border-b border-border flex items-center justify-between flex-shrink-0">
