@@ -1,1 +1,38 @@
 .env
+node_modules
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg-info/
+.eggs/
+.Python
+env/
+venv/
+ENV/
+*.env
+
+# Django
+*.log
+*.pot
+*.pyc
+*.db
+db.sqlite3
+media/
+staticfiles/
+static/
+
+# VSCode / IDE
+.vscode/
+.idea/
+*.swp
+.DS_Store
+
+# Render / dotenv
+.env
+
+
+# Ignore files related to specific services or tools

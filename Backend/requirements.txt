@@ -1,5 +1,6 @@
 django
+djangorestframework
 requests
 beautifulsoup4
-openai
 python-dotenv
+openai
