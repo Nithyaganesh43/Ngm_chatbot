@@ -33,7 +33,6 @@ from django.core.management import execute_from_command_line
 from django.urls import path
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.utils import timezone 
 
 # Configure Django settings
 if not settings.configured:
@@ -59,7 +58,7 @@ if not settings.configured:
         ],
         CORS_ALLOW_CREDENTIALS=True,
         CORS_ALLOW_ALL_ORIGINS=False,
-        CORS_ALLOWED_HEADERS=[
+        CORS_ALLOW_HEADERS=[
             'accept',
             'accept-encoding',
             'authorization',
