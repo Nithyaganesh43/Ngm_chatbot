@@ -301,7 +301,7 @@ def validate_message(msg: str) -> Optional[str]:
 def auth_required(func):
     def wrapper(request, *args, **kwargs):
         password = request.headers.get('x-api-key')
-        if password != os.environ.get("PASSWORD"):
+        if password != "Abkr212@ngmc":
             return JsonResponse({"error":"Unauthorized"}, status=401)
         return func(request, *args, **kwargs)
     return wrapper
