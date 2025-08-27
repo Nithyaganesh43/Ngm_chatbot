@@ -6,9 +6,26 @@ from dotenv import load_dotenv
 from openai import OpenAI
 import requests
 from bs4 import BeautifulSoup
+from pymongo import MongoClient
+from bson import ObjectId
+from datetime import datetime
 
 # Load environment variables first
 load_dotenv()
+#env have MONGODB_CONNECTION_STRING , CHAT_GPT_API, PASSWORD
+
+try:
+    mongo_client = MongoClient(os.environ.get("MONOGDB_CONNECTION_STRING"))
+    # Test the connection
+    mongo_client.admin.command('ping')
+    db = mongo_client.ngmc_chatbot
+    chats_collection = db.chats
+    conversations_collection = db.conversations
+    print("✅ MongoDB connection successful!")
+except Exception as e:
+    print(f"❌ MongoDB connection failed: {e}")
+    print("Please ensure MongoDB is running or check your MONGODB_CONNECTION_STRING")
+    exit(1)
 
 # Django imports and setup
 import django
@@ -17,7 +34,6 @@ from django.core.management import execute_from_command_line
 from django.urls import path
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from django.db import models, connection
 from django.utils import timezone 
 
 # Configure Django settings
@@ -32,12 +48,6 @@ if not settings.configured:
             'django.contrib.auth',
             __name__,
         ],
-        DATABASES={
-            'default': {
-                'ENGINE': 'django.db.backends.sqlite3',
-                'NAME': 'db.sqlite3'
-            }
-        },
         TIME_ZONE='Asia/Kolkata',
         USE_TZ=True,
         DEFAULT_AUTO_FIELD='django.db.models.BigAutoField',
@@ -45,45 +55,109 @@ if not settings.configured:
 
 django.setup()
 
-# Models
-class Chat(models.Model):
-    title = models.CharField(max_length=255)
-    created_at = models.DateTimeField(default=timezone.now)
+# MongoDB Models (using simple classes instead of Django models)
+class Chat:
+    def __init__(self, title, _id=None, created_at=None):
+        self.id = _id
+        self.title = title
+        self.created_at = created_at or datetime.now()
+    
+    @classmethod
+    def create(cls, title):
+        chat_data = {
+            'title': title,
+            'created_at': datetime.now()
+        }
+        result = chats_collection.insert_one(chat_data)
+        return cls(title, result.inserted_id, chat_data['created_at'])
+    
+    @classmethod
+    def get(cls, chat_id):
+        chat_data = chats_collection.find_one({'_id': ObjectId(chat_id)})
+        if chat_data:
+            return cls(chat_data['title'], chat_data['_id'], chat_data['created_at'])
+        return None
+    
+    @classmethod
+    def all(cls):
+        chats = []
+        for chat_data in chats_collection.find().sort('_id', -1):
+            chats.append(cls(chat_data['title'], chat_data['_id'], chat_data['created_at']))
+        return chats
+    
+    def save(self):
+        chats_collection.update_one(
+            {'_id': self.id},
+            {'$set': {'title': self.title, 'created_at': self.created_at}}
+        )
 
-    class Meta:
-        app_label = '__main__'
-        db_table = 'chat'
-
-class Conversation(models.Model):
-    chat = models.ForeignKey(Chat, related_name='conversations', on_delete=models.CASCADE)
-    role = models.CharField(max_length=10, choices=[('user','user'),('AI','AI')])
-    message = models.TextField()
-    created_at = models.DateTimeField(default=timezone.now)
-
-    class Meta:
-        app_label = '__main__'
-        db_table = 'conversation'
-
+class Conversation:
+    def __init__(self, chat_id, role, message, _id=None, created_at=None):
+        self.id = _id
+        self.chat_id = chat_id
+        self.role = role
+        self.message = message
+        self.created_at = created_at or datetime.now()
+    
+    @classmethod
+    def bulk_create(cls, conversations):
+        docs = []
+        for conv in conversations:
+            docs.append({
+                'chat_id': conv.chat_id,
+                'role': conv.role,
+                'message': conv.message,
+                'created_at': conv.created_at
+            })
+        conversations_collection.insert_many(docs)
+    
+    @classmethod
+    def filter_by_chat(cls, chat):
+        conversations = []
+        for conv_data in conversations_collection.find({'chat_id': chat.id}).sort('created_at', 1):
+            conversations.append(cls(
+                conv_data['chat_id'],
+                conv_data['role'],
+                conv_data['message'],
+                conv_data['_id'],
+                conv_data['created_at']
+            ))
+        return conversations
+    
+    @classmethod
+    def filter_by_chat_last_n(cls, chat, n):
+        conversations = []
+        for conv_data in conversations_collection.find({'chat_id': chat.id}).sort('_id', -1).limit(n):
+            conversations.append(cls(
+                conv_data['chat_id'],
+                conv_data['role'],
+                conv_data['message'],
+                conv_data['_id'],
+                conv_data['created_at']
+            ))
+        return conversations
+    
+    @classmethod
+    def all(cls):
+        conversations = []
+        for conv_data in conversations_collection.find().sort('created_at', -1):
+            conversations.append(cls(
+                conv_data['chat_id'],
+                conv_data['role'],
+                conv_data['message'],
+                conv_data['_id'],
+                conv_data['created_at']
+            ))
+        return conversations
 
 def ensure_tables():
-    with connection.cursor() as cursor:
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS chat (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                title VARCHAR(255) NOT NULL,
-                created_at DATETIME NOT NULL
-            )
-        """)
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS conversation (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                chat_id INTEGER NOT NULL,
-                role VARCHAR(10) NOT NULL,
-                message TEXT NOT NULL,
-                created_at DATETIME NOT NULL,
-                FOREIGN KEY (chat_id) REFERENCES chat(id) ON DELETE CASCADE
-            )
-        """)
+    # MongoDB doesn't need table creation, but we can create indexes for performance
+    try:
+        chats_collection.create_index("created_at")
+        conversations_collection.create_index([("chat_id", 1), ("created_at", 1)])
+        print("MongoDB indexes created successfully!")
+    except Exception as e:
+        print(f"Index creation info: {e}")
 
 ensure_tables()
 
@@ -105,8 +179,8 @@ def webScrabedData():
 
 
 def get_last_5_conversations_as_string():
-    conversations=Conversation.objects.all().order_by('-created_at')[:5]
-    conversations=reversed(conversations)  # keep chronological order
+    conversations = Conversation.all()[:5]
+    conversations = reversed(conversations)  # keep chronological order
 
     result=[]
     for conv in conversations:
@@ -215,12 +289,12 @@ def post_chat(request):
     gpt_resp = call_chatgpt(messages)
     parsed = extract_json_from_response(gpt_resp)
     
-    chat = Chat.objects.create(title=parsed['title'])
-    Conversation.objects.bulk_create([
-        Conversation(chat=chat, role='user', message=user_message),
-        Conversation(chat=chat, role='AI', message=parsed['reply'])
+    chat = Chat.create(title=parsed['title'])
+    Conversation.bulk_create([
+        Conversation(chat.id, 'user', user_message),
+        Conversation(chat.id, 'AI', parsed['reply'])
     ])
-    return JsonResponse({"chatId":chat.id,"reply":parsed['reply'],"title":parsed['title']})
+    return JsonResponse({"chatId":str(chat.id),"reply":parsed['reply'],"title":parsed['title']})
 
 @csrf_exempt
 @auth_required
@@ -239,11 +313,13 @@ def continue_chat(request, chat_id):
         return JsonResponse({"error": err}, status=400)
     
     try: 
-        chat = Chat.objects.get(id=chat_id)
-    except Chat.DoesNotExist: 
+        chat = Chat.get(chat_id)
+        if not chat:
+            return JsonResponse({"error":"Chat not found"}, status=404)
+    except Exception: 
         return JsonResponse({"error":"Chat not found"}, status=404)
     
-    last_msgs = Conversation.objects.filter(chat=chat).order_by('-id')[:10]
+    last_msgs = Conversation.filter_by_chat_last_n(chat, 10)
     conv_history = [{"role":"assistant" if c.role=="AI" else "user","content":c.message} for c in last_msgs][::-1]
     conv_history.append({"role":"user","content":user_message})
     
@@ -253,28 +329,28 @@ def continue_chat(request, chat_id):
     parsed = extract_json_from_response(gpt_resp)
      
     chat.save()
-    Conversation.objects.bulk_create([
-        Conversation(chat=chat, role='user', message=user_message),
-        Conversation(chat=chat, role='AI', message=parsed['reply'])
+    Conversation.bulk_create([
+        Conversation(chat.id, 'user', user_message),
+        Conversation(chat.id, 'AI', parsed['reply'])
     ])
-    return JsonResponse({"chatId":chat.id,"reply":parsed['reply'] })
+    return JsonResponse({"chatId":str(chat.id),"reply":parsed['reply'] })
 
 @auth_required
 def get_chats(request):
     # Get all chats with their conversations
     chats_data = []
     
-    for chat in Chat.objects.all().order_by('-id'):
+    for chat in Chat.all():
         # Get all conversations for this chat
-        conversations = Conversation.objects.filter(chat=chat).order_by('created_at')
+        conversations = Conversation.filter_by_chat(chat)
         
         chat_data = {
-            'id': chat.id,
+            'id': str(chat.id),
             'title': chat.title,
             'created_at': chat.created_at.isoformat(),
             'conversations': [
                 {
-                    'id': conv.id,
+                    'id': str(conv.id),
                     'role': conv.role,
                     'message': conv.message,
                     'created_at': conv.created_at.isoformat()
@@ -289,7 +365,7 @@ def get_chats(request):
 # URL patterns
 urlpatterns = [
     path('postchat/', post_chat),
-    path('postchat/<int:chat_id>/', continue_chat),
+    path('postchat/<str:chat_id>/', continue_chat),
     path('getchat/', get_chats),
 ]
 
@@ -377,7 +453,6 @@ if __name__ == '__main__':
     ensure_tables()
     print("Starting NGMC Chatbot Server...")
     print(f"Server will start at http://0.0.0.0:{runserver.default_port}")
-    print("Database initialized successfully!")
+    print("MongoDB initialized successfully!")
     
     execute_from_command_line([__file__, 'runserver'])
-
