@@ -1,5 +1,3 @@
-'use client';
-
 import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -408,6 +406,38 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     }
   };
 
+  // Function to parse and format text with newlines and bold text
+  const formatText = (text: string) => {
+    // Split by newlines first
+    const lines = text.split('\n');
+
+    return lines.map((line, lineIndex) => {
+      // Process each line for bold text
+      const parts = line.split(/(\*\*[^*]+\*\*)/g);
+
+      return (
+        <div key={lineIndex} className={lineIndex > 0 ? 'mt-2' : ''}>
+          {parts.map((part, partIndex) => {
+            // Check if part is bold (wrapped with **)
+            if (
+              part.startsWith('**') &&
+              part.endsWith('**') &&
+              part.length > 4
+            ) {
+              const boldText = part.slice(2, -2);
+              return (
+                <strong key={partIndex} className="font-semibold">
+                  {boldText}
+                </strong>
+              );
+            }
+            return part;
+          })}
+        </div>
+      );
+    });
+  };
+
   const renderMessage = (msg: Message) => {
     if (msg.role === 'AI') {
       let processedMessage = msg.message;
@@ -454,19 +484,21 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
                 <Button
                   key={index}
                   variant="link"
-                  className="text-blue-400 hover:text-blue-300 underline p-0 h-auto font-normal text-sm inline mx-1"
+                  className="text-blue-500 hover:text-blue-400 underline p-0 h-auto font-normal text-sm inline mx-1 break-all max-w-full"
                   onClick={() => handlePdfClick(pdfData.url, pdfData.title)}>
-                  {pdfData.title}
+                  <span className="break-words">{pdfData.title}</span>
                 </Button>
               );
             }
-            return <span key={index}>{part}</span>;
+            return <div key={index}>{formatText(part)}</div>;
           })}
         </div>
       );
     }
 
-    return <div className="text-sm leading-relaxed">{msg.message}</div>;
+    return (
+      <div className="text-sm leading-relaxed">{formatText(msg.message)}</div>
+    );
   };
 
   return (
@@ -597,7 +629,7 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
                           <div className="flex-1 space-y-2 text-right">
                             <div className="inline-block max-w-[80%] p-3 rounded-lg bg-primary text-primary-foreground ml-auto">
                               <div className="text-sm leading-relaxed">
-                                {msg.message}
+                                {renderMessage(msg)}
                               </div>
                             </div>
                           </div>

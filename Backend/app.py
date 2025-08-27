@@ -235,6 +235,10 @@ You may get 2 types of queries:
 for this you need to answer in a conversational manner.
 2. Specific queries about exam schedules, fee structures, seating arrangements, syllabus, etc.
 for this you need to  answer with simple and direct answers with relevant links from the provided data.
+
+for new line user \n use it.
+for bold text use **text**.
+
 """ 
 def call_chatgpt(messages: List[Dict]) -> str:
     try:
