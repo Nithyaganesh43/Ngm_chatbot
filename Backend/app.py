@@ -11,8 +11,7 @@ from bson import ObjectId
 from datetime import datetime
 
 # Load environment variables first
-load_dotenv()
-#env have MONGODB_CONNECTION_STRING , CHAT_GPT_API, PASSWORD
+load_dotenv() 
 
 try:
     mongo_client = MongoClient(os.environ.get("MONOGDB_CONNECTION_STRING"))
