@@ -201,6 +201,38 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     return pdfs;
   };
 
+  // Function to extract all URLs from text (not just PDFs)
+  const extractAllUrls = (
+    text: string
+  ): Array<{ url: string; title?: string }> => {
+    const urls: Array<{ url: string; title?: string }> = [];
+
+    // Format 1: [title](url) - standard markdown
+    const markdownRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
+    let match;
+    while ((match = markdownRegex.exec(text)) !== null) {
+      urls.push({
+        title: match[1],
+        url: match[2],
+      });
+    }
+
+    // Format 2: Plain URLs (http/https)
+    const plainUrlRegex = /(https?:\/\/[^\s\]]+)/g;
+    const textWithoutMarkdown = text.replace(/\[([^\]]+)\]\(([^)]+)\)/g, ''); // Remove markdown links first
+    while ((match = plainUrlRegex.exec(textWithoutMarkdown)) !== null) {
+      // Only add if it's not already captured as markdown
+      const url = match[1];
+      if (!urls.some((existing) => existing.url === url)) {
+        urls.push({
+          url: url,
+        });
+      }
+    }
+
+    return urls;
+  };
+
   const handlePdfClick = (url: string, title: string) => {
     setPdfUrl(url);
     setPdfTitle(title);
@@ -442,53 +474,84 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     if (msg.role === 'AI') {
       let processedMessage = msg.message;
 
-      // Extract PDFs and replace them with clickable links
+      // Extract all URLs (PDFs and regular links)
+      const allUrls = extractAllUrls(msg.message);
       const pdfs = extractPdfUrls(msg.message);
 
-      // Create a unique identifier for each PDF link to avoid conflicts
-      const pdfReplacements = new Map();
+      // Create replacements map for all links
+      const linkReplacements = new Map();
 
-      pdfs.forEach((pdf, pdfIndex) => {
-        const uniqueId = `PDF_LINK_${pdfIndex}_${pdf.title.replace(
-          /[^a-zA-Z0-9]/g,
-          '_'
-        )}`;
-        pdfReplacements.set(uniqueId, pdf);
+      allUrls.forEach((urlData, index) => {
+        const isPdf = urlData.url.toLowerCase().includes('.pdf');
+        const uniqueId = `LINK_${index}_${(
+          urlData.title || urlData.url
+        ).replace(/[^a-zA-Z0-9]/g, '_')}`;
 
-        // Replace both markdown and custom formats with unique identifier
-        const markdownPattern = `[${pdf.title}](${pdf.url})`;
-        const customPattern = `[${pdf.title}]$${pdf.url}$`;
+        linkReplacements.set(uniqueId, {
+          ...urlData,
+          isPdf,
+        });
 
-        processedMessage = processedMessage.replace(
-          markdownPattern,
-          `__${uniqueId}__`
-        );
-        processedMessage = processedMessage.replace(
-          customPattern,
-          `__${uniqueId}__`
-        );
+        // Replace markdown links
+        if (urlData.title) {
+          const markdownPattern = `[${urlData.title}](${urlData.url})`;
+          processedMessage = processedMessage.replace(
+            markdownPattern,
+            `__${uniqueId}__`
+          );
+        } else {
+          // Replace plain URLs
+          processedMessage = processedMessage.replace(
+            urlData.url,
+            `__${uniqueId}__`
+          );
+        }
       });
 
-      // Split the message and render PDF links as buttons
-      const parts = processedMessage.split(
-        /(__PDF_LINK_\d+_[^_]+(?:_[^_]+)*__)/g
-      );
+      // Split the message and render links as clickable buttons
+      const parts = processedMessage.split(/(__LINK_\d+_[^_]+(?:_[^_]+)*__)/g);
 
       return (
         <div className="text-sm leading-relaxed">
           {parts.map((part, index) => {
-            const pdfMatch = part.match(/__([^_]+(?:_[^_]+)*)__/);
-            if (pdfMatch && pdfReplacements.has(pdfMatch[1])) {
-              const pdfData = pdfReplacements.get(pdfMatch[1]);
-              return (
-                <Button
-                  key={index}
-                  variant="link"
-                  className="text-blue-500 hover:text-blue-400 underline p-0 h-auto font-normal text-sm inline mx-1 break-all max-w-full"
-                  onClick={() => handlePdfClick(pdfData.url, pdfData.title)}>
-                  <span className="break-words">{pdfData.title}</span>
-                </Button>
-              );
+            const linkMatch = part.match(/__([^_]+(?:_[^_]+)*)__/);
+            if (linkMatch && linkReplacements.has(linkMatch[1])) {
+              const linkData = linkReplacements.get(linkMatch[1]);
+
+              if (linkData.isPdf) {
+                // Handle PDF links with PDF viewer
+                return (
+                  <Button
+                    key={index}
+                    variant="link"
+                    className="text-blue-500 hover:text-blue-400 underline p-0 h-auto font-normal text-sm inline mx-1 break-all max-w-full"
+                    onClick={() =>
+                      handlePdfClick(
+                        linkData.url,
+                        linkData.title || 'PDF Document'
+                      )
+                    }>
+                    <span className="break-words">
+                      {linkData.title || linkData.url}
+                    </span>
+                  </Button>
+                );
+              } else {
+                // Handle regular links - open in new tab
+                return (
+                  <Button
+                    key={index}
+                    variant="link"
+                    className="text-blue-500 hover:text-blue-400 underline p-0 h-auto font-normal text-sm inline mx-1 break-all max-w-full"
+                    onClick={() =>
+                      window.open(linkData.url, '_blank', 'noopener,noreferrer')
+                    }>
+                    <span className="break-words">
+                      {linkData.title || linkData.url}
+                    </span>
+                  </Button>
+                );
+              }
             }
             return <div key={index}>{formatText(part)}</div>;
           })}
