@@ -239,6 +239,11 @@ for this you need to  answer with simple and direct answers with relevant links 
 for new line user \n use it.
 for bold text use **text**.
 
+ALWAYS output in JSON format with two keys: "reply" and "title". 
+
+LIMITS:
+- "reply" should be concise, ideally under 500 words.
+- "title" should be a brief summary of the reply, ideally under 4 words.
 """ 
 def call_chatgpt(messages: List[Dict]) -> str:
     try:
@@ -362,7 +367,7 @@ def continue_chat(request, chat_id):
     conv_history = [{"role":"assistant" if c.role=="AI" else "user","content":c.message} for c in last_msgs][::-1]
     conv_history.append({"role":"user","content":user_message})
     
-    prompt = f"{ENHANCED_SYSTEM_PROMPT}\nUser Query: {user_message}\nOutput JSON with reply a plain text alone"
+    prompt = f"{ENHANCED_SYSTEM_PROMPT}\nUser Query: {user_message}\nOutput JSON with reply only"
     messages = [{"role":"system","content":prompt}] + conv_history
     gpt_resp = call_chatgpt(messages)
     parsed = extract_json_from_response(gpt_resp)
