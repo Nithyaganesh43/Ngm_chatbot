@@ -30,7 +30,7 @@ export default function Home() {
       const storedPassword = localStorage.getItem("ngmc-auth-key")
       if (storedPassword) {
         try {
-          const response = await fetch(`${API_BASE_URL}/checkauth`, {
+          const response = await fetch(`${API_BASE_URL}/checkAuth`, {
             headers: {
               'x-api-key': storedPassword,
             },

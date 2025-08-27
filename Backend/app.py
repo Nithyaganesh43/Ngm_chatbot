@@ -399,7 +399,7 @@ def get_chats(request):
 
 # URL patterns
 urlpatterns = [
-    path('checkauth/', checkAuth),
+    path('checkAuth/', checkAuth),
     path('postchat/', post_chat),
     path('postchat/<str:chat_id>/', continue_chat),
     path('getchat/', get_chats),
