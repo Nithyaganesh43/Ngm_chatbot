@@ -36,6 +36,7 @@ interface UserData {
   id: string;
   userName: string;
   email: string;
+  password: string; // Added password field
 }
 
 interface ChatInterfaceProps {
@@ -112,6 +113,7 @@ export default function ChatInterface({
             id: data.user.id,
             userName: data.user.userName,
             email: data.user.email,
+            password: userData.password, // Keep existing password
           });
         }
       } else if (response.status === 404) {
@@ -221,6 +223,7 @@ export default function ChatInterface({
         message: userMessage,
         userName: userData.userName,
         email: userData.email,
+        password: userData.password, // Added password to request body
       };
 
       let response;

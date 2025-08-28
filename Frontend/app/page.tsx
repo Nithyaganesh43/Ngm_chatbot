@@ -23,6 +23,7 @@ interface UserData {
   id: string;
   userName: string;
   email: string;
+  password: string; // Added password field
 }
 
 export default function Home() {
@@ -52,11 +53,12 @@ export default function Home() {
             },
           });
           if (response.ok) {
-            // Set user data from localStorage
+            // Set user data from localStorage with password
             setUserData({
               id: '', // We'll get this from first API call
               userName: storedName,
               email: storedEmail,
+              password: storedPassword, // Include password in userData
             });
             setIsAuthenticated(true);
           } else {
@@ -115,11 +117,12 @@ export default function Home() {
         localStorage.setItem('ngmc-user-name', loginData.name.trim());
         localStorage.setItem('ngmc-user-email', loginData.email.trim());
 
-        // Set user data
+        // Set user data with password included
         setUserData({
           id: '', // Will be populated on first chat
           userName: loginData.name.trim(),
           email: loginData.email.trim(),
+          password: loginData.password, // Include password in userData
         });
 
         setIsAuthenticated(true);
@@ -145,7 +148,7 @@ export default function Home() {
 
   const updateUserData = (newUserData: UserData) => {
     setUserData(newUserData);
-    // Update localStorage as well
+    // Update localStorage as well (but keep password in memory only)
     localStorage.setItem('ngmc-user-name', newUserData.userName);
     localStorage.setItem('ngmc-user-email', newUserData.email);
   };
