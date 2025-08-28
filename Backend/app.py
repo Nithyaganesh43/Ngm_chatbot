@@ -52,7 +52,7 @@ if not settings.configured:
             # 'corsheaders.middleware.CorsMiddleware',
             'django.middleware.common.CommonMiddleware',
         ],
-        CORS_ALLOWED_ORIGINS=[
+        CORS_ALLOW_ORIGINS=[
             "https://ngmchatbot.vercel.app",
             "http://localhost:3000",   
             "http://127.0.0.1:3000",
@@ -88,34 +88,36 @@ django.setup()
 
 # MongoDB Models (using simple classes instead of Django models)
 class User:
-    def __init__(self, userName, email, _id=None, created_at=None):
+    def __init__(self, userName, email, password, _id=None, created_at=None):
         self.id = _id
         self.userName = userName
         self.email = email
+        self.password = password
         self.created_at = created_at or datetime.now()
     
     @classmethod
-    def create(cls, userName, email):
+    def create(cls, userName, email, password):
         user_data = {
             'userName': userName,
             'email': email,
+            'password': password,
             'created_at': datetime.now()
         }
         result = users_collection.insert_one(user_data)
-        return cls(userName, email, result.inserted_id, user_data['created_at'])
+        return cls(userName, email, password, result.inserted_id, user_data['created_at'])
     
     @classmethod
     def get_by_email(cls, email):
         user_data = users_collection.find_one({'email': email})
         if user_data:
-            return cls(user_data['userName'], user_data['email'], user_data['_id'], user_data['created_at'])
+            return cls(user_data['userName'], user_data['email'], user_data.get('password', ''), user_data['_id'], user_data['created_at'])
         return None
     
     @classmethod
     def get(cls, user_id):
         user_data = users_collection.find_one({'_id': ObjectId(user_id)})
         if user_data:
-            return cls(user_data['userName'], user_data['email'], user_data['_id'], user_data['created_at'])
+            return cls(user_data['userName'], user_data['email'], user_data.get('password', ''), user_data['_id'], user_data['created_at'])
         return None
 
 class Chat:
@@ -341,7 +343,7 @@ def validate_message(msg: str) -> Optional[str]:
         return "Message too long (max 1000 chars)"
     return None
 
-def validate_user_data(userName: str, email: str) -> Optional[str]:
+def validate_user_data(userName: str, email: str, password: str = None) -> Optional[str]:
     if not userName or not userName.strip():
         return "Valid userName is required"
     if not email or not email.strip():
@@ -355,20 +357,28 @@ def validate_user_data(userName: str, email: str) -> Optional[str]:
         return "Invalid email format"
     return None
 
-def get_or_create_user(userName: str, email: str) -> User:
+def get_or_create_user(userName: str, email: str, password: str = None) -> User:
     """Get existing user by email or create new one"""
     existing_user = User.get_by_email(email)
     if existing_user:
-        # Update userName if it's different
+        # Update userName and password if they're different
+        update_fields = {}
         if existing_user.userName != userName:
+            update_fields['userName'] = userName
+            existing_user.userName = userName
+        if password and existing_user.password != password:
+            update_fields['password'] = password
+            existing_user.password = password
+        
+        # Update database if there are changes
+        if update_fields:
             users_collection.update_one(
                 {'_id': existing_user.id},
-                {'$set': {'userName': userName}}
+                {'$set': update_fields}
             )
-            existing_user.userName = userName
         return existing_user
     else:
-        return User.create(userName, email)
+        return User.create(userName, email, password or '')
 
 def auth_required(func):
     def wrapper(request, *args, **kwargs):
@@ -393,6 +403,7 @@ def post_chat(request):
     user_message = body.get('message','').strip()
     userName = body.get('userName','').strip()
     email = body.get('email','').strip()
+    password = body.get('password','').strip()
     
     # Validate message
     err = validate_message(user_message)
@@ -400,13 +411,13 @@ def post_chat(request):
         return JsonResponse({"error": err}, status=400)
     
     # Validate user data
-    user_err = validate_user_data(userName, email)
+    user_err = validate_user_data(userName, email, password)
     if user_err:
         return JsonResponse({"error": user_err}, status=400)
     
     # Get or create user
     try:
-        user = get_or_create_user(userName, email)
+        user = get_or_create_user(userName, email, password)
     except Exception as e:
         print(f"User creation error: {e}")
         return JsonResponse({"error": "Failed to create/get user"}, status=500)
@@ -448,6 +459,7 @@ def continue_chat(request, chat_id):
     user_message = body.get('message','').strip()
     userName = body.get('userName','').strip()
     email = body.get('email','').strip()
+    password = body.get('password','').strip()
     
     # Validate message
     err = validate_message(user_message)
@@ -455,7 +467,7 @@ def continue_chat(request, chat_id):
         return JsonResponse({"error": err}, status=400)
     
     # Validate user data
-    user_err = validate_user_data(userName, email)
+    user_err = validate_user_data(userName, email, password)
     if user_err:
         return JsonResponse({"error": user_err}, status=400)
     
@@ -468,7 +480,7 @@ def continue_chat(request, chat_id):
     
     # Get or create user
     try:
-        user = get_or_create_user(userName, email)
+        user = get_or_create_user(userName, email, password)
     except Exception as e:
         print(f"User creation error: {e}")
         return JsonResponse({"error": "Failed to create/get user"}, status=500)
