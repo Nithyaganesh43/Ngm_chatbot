@@ -15,7 +15,6 @@ load_dotenv()
 
 try:
     mongo_client = MongoClient(os.environ.get("MONOGDB_CONNECTION_STRING"))
-    # Test the connection
     mongo_client.admin.command('ping')
     db = mongo_client.ngmc_chatbot
     users_collection = db.users
@@ -32,10 +31,10 @@ import django
 from django.conf import settings
 from django.core.management import execute_from_command_line
 from django.urls import path
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-# Configure Django settings
+# Configure Django settings (no corsheaders)
 if not settings.configured:
     settings.configure(
         DEBUG=True,
@@ -43,41 +42,12 @@ if not settings.configured:
         ROOT_URLCONF=__name__,
         ALLOWED_HOSTS=['*'],
         INSTALLED_APPS=[
-            'corsheaders',
             'django.contrib.contenttypes',
             'django.contrib.auth',
             __name__,
         ],
         MIDDLEWARE=[
-            'corsheaders.middleware.CorsMiddleware',
             'django.middleware.common.CommonMiddleware',
-        ],
-        CORS_ALLOW_ORIGINS=[
-            "https://ngmchatbot.vercel.app",
-            "http://localhost:3000",   
-            "http://127.0.0.1:3000",
-        ],
-        CORS_ALLOW_CREDENTIALS=True,
-        CORS_ALLOW_ALL_ORIGINS=False,
-        CORS_ALLOW_HEADERS=[
-            'accept',
-            'accept-encoding',
-            'authorization',
-            'content-type',
-            'dnt',
-            'origin',
-            'user-agent',
-            'x-csrftoken',
-            'x-requested-with',
-            'x-api-key',
-        ],
-        CORS_ALLOWED_METHODS=[
-            'DELETE',
-            'GET',
-            'OPTIONS',
-            'PATCH',
-            'POST',
-            'PUT',
         ],
         TIME_ZONE='Asia/Kolkata',
         USE_TZ=True,
@@ -85,6 +55,36 @@ if not settings.configured:
     )
 
 django.setup()
+
+# manual CORS helper
+ALLOWED_ORIGINS = [
+    "https://ngmchatbot.vercel.app",
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+]
+
+def add_cors_headers(request, response: HttpResponse) -> HttpResponse:
+    origin = request.META.get("HTTP_ORIGIN")
+    if origin in ALLOWED_ORIGINS:
+        response["Access-Control-Allow-Origin"] = origin
+    response["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
+    response["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-API-Key"
+    response["Access-Control-Allow-Credentials"] = "true"
+    return response
+
+# Example route with manual CORS
+@csrf_exempt
+def check_auth(request):
+    if request.method == "OPTIONS":
+        resp = HttpResponse(status=204)
+        return add_cors_headers(request, resp)
+    data = {"status": "ok", "msg": "Auth check passed"}
+    resp = JsonResponse(data)
+    return add_cors_headers(request, resp)
+
+urlpatterns = [
+    path("checkAuth", check_auth),
+]
 
 # MongoDB Models (using simple classes instead of Django models)
 class User:
@@ -460,7 +460,9 @@ def continue_chat(request, chat_id):
     userName = body.get('userName','').strip()
     email = body.get('email','').strip()
     password = body.get('password','').strip()
-    
+    apikey = body.get('apikey','').strip()
+    if apikey != "Abkr212@ngmc":
+        return JsonResponse({"error":"Unauthorized"}, status=401)
     # Validate message
     err = validate_message(user_message)
     if err: 
