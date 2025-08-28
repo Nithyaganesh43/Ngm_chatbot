@@ -19,22 +19,13 @@ import ChatInterface from '@/components/chat-interface';
 
 const API_BASE_URL = 'https://ngmchatbot.onrender.com';
 
-interface UserData {
-  id: string;
-  userName: string;
-  email: string;
-  password: string; // Added password field
-}
-
 export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
-  const [userData, setUserData] = useState<UserData | null>(null);
   const [loginData, setLoginData] = useState({
     name: '',
     email: '',
     password: '',
-    apikey: '', // Added apikey field
   });
   const [loginLoading, setLoginLoading] = useState(false);
   const [error, setError] = useState('');
@@ -42,28 +33,28 @@ export default function Home() {
   // Check if user is already authenticated
   useEffect(() => {
     const checkAuth = async () => {
-      const storedPassword = localStorage.getItem('ngmc-auth-key');
       const storedName = localStorage.getItem('ngmc-user-name');
       const storedEmail = localStorage.getItem('ngmc-user-email');
+      const storedPassword = localStorage.getItem('ngmc-auth-key');
 
-      if (storedPassword && storedName && storedEmail) {
+      if (storedName && storedEmail && storedPassword) {
         try {
           const response = await fetch(`${API_BASE_URL}/checkAuth/`, {
+            method: 'POST',
             headers: {
-              'x-api-key': storedPassword,
+              'Content-Type': 'application/json',
             },
-          });
-          if (response.ok) {
-            // Set user data from localStorage with password
-            setUserData({
-              id: '', // We'll get this from first API call
+            body: JSON.stringify({
+              apikey: 'Abkr212@ngmc',
               userName: storedName,
               email: storedEmail,
-              password: storedPassword, // Include password in userData
-            });
+              password: storedPassword,
+            }),
+          });
+
+          if (response.ok) {
             setIsAuthenticated(true);
           } else {
-            // Clear all auth data if check fails
             localStorage.removeItem('ngmc-auth-key');
             localStorage.removeItem('ngmc-user-name');
             localStorage.removeItem('ngmc-user-email');
@@ -89,55 +80,38 @@ export default function Home() {
     if (
       !loginData.name.trim() ||
       !loginData.email.trim() ||
-      !loginData.password.trim() ||
-      !loginData.apikey.trim()
+      !loginData.password.trim()
     ) {
       setError('All fields are required');
       setLoginLoading(false);
       return;
     }
 
-    // Basic email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailData.test(loginData.email)) {
-      setError('Please enter a valid email address');
-      setLoginLoading(false);
-      return;
-    }
-
     try {
-      // First check auth with both password and apikey
-      const authResponse = await fetch(`${API_BASE_URL}/checkAuth/`, {
+      const response = await fetch(`${API_BASE_URL}/checkAuth/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'x-api-key': loginData.password,
         },
         body: JSON.stringify({
-          apikey: loginData.apikey,
+          apikey: 'Abkr212@ngmc',
+          userName: loginData.name,
+          email: loginData.email,
+          password: loginData.password,
         }),
       });
 
-      if (authResponse.ok) {
+      if (response.ok) {
         // Store auth data in localStorage
         localStorage.setItem('ngmc-auth-key', loginData.password);
-        localStorage.setItem('ngmc-user-name', loginData.name.trim());
-        localStorage.setItem('ngmc-user-email', loginData.email.trim());
-
-        // Set user data with password included
-        setUserData({
-          id: '', // Will be populated on first chat
-          userName: loginData.name.trim(),
-          email: loginData.email.trim(),
-          password: loginData.password, // Include password in userData
-        });
-
+        localStorage.setItem('ngmc-user-name', loginData.name);
+        localStorage.setItem('ngmc-user-email', loginData.email);
         setIsAuthenticated(true);
       } else {
-        const errorData = await authResponse.json();
+        const errorData = await response.json();
         setError(
           errorData.error ||
-            'Invalid credentials. Please check your access key and password.'
+            'Authentication failed. Please check your credentials.'
         );
       }
     } catch (error) {
@@ -153,15 +127,7 @@ export default function Home() {
     localStorage.removeItem('ngmc-user-name');
     localStorage.removeItem('ngmc-user-email');
     setIsAuthenticated(false);
-    setUserData(null);
-    setLoginData({ name: '', email: '', password: '', apikey: '' });
-  };
-
-  const updateUserData = (newUserData: UserData) => {
-    setUserData(newUserData);
-    // Update localStorage as well (but keep password in memory only)
-    localStorage.setItem('ngmc-user-name', newUserData.userName);
-    localStorage.setItem('ngmc-user-email', newUserData.email);
+    setLoginData({ name: '', email: '', password: '' });
   };
 
   if (isLoading) {
@@ -172,7 +138,7 @@ export default function Home() {
     );
   }
 
-  if (!isAuthenticated || !userData) {
+  if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center p-4">
         <Card className="w-full max-w-md">
@@ -206,7 +172,6 @@ export default function Home() {
                     setLoginData((prev) => ({ ...prev, name: e.target.value }))
                   }
                   disabled={loginLoading}
-                  maxLength={100}
                 />
               </div>
               <div className="space-y-2">
@@ -220,36 +185,19 @@ export default function Home() {
                     setLoginData((prev) => ({ ...prev, email: e.target.value }))
                   }
                   disabled={loginLoading}
-                  maxLength={200}
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password </Label>
+                <Label htmlFor="password">Access Key</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter your password"
+                  placeholder="Enter your access key"
                   value={loginData.password}
                   onChange={(e) =>
                     setLoginData((prev) => ({
                       ...prev,
                       password: e.target.value,
-                    }))
-                  }
-                  disabled={loginLoading}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="apikey">Access Key</Label>
-                <Input
-                  id="apikey"
-                  type="password"
-                  placeholder="Enter your access key"
-                  value={loginData.apikey}
-                  onChange={(e) =>
-                    setLoginData((prev) => ({
-                      ...prev,
-                      apikey: e.target.value,
                     }))
                   }
                   disabled={loginLoading}
@@ -278,11 +226,5 @@ export default function Home() {
     );
   }
 
-  return (
-    <ChatInterface
-      onLogout={handleLogout}
-      userData={userData}
-      onUpdateUserData={updateUserData}
-    />
-  );
+  return <ChatInterface onLogout={handleLogout} />;
 }

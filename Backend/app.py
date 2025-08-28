@@ -10,7 +10,6 @@ from pymongo import MongoClient
 from bson import ObjectId
 from datetime import datetime
 
-# Load environment variables first
 load_dotenv() 
 
 try:
@@ -26,7 +25,6 @@ except Exception as e:
     print("Please ensure MongoDB is running or check your MONGODB_CONNECTION_STRING")
     exit(1)
 
-# Django imports and setup
 import django
 from django.conf import settings
 from django.core.management import execute_from_command_line
@@ -34,7 +32,6 @@ from django.urls import path
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 
-# Configure Django settings (no corsheaders)
 if not settings.configured:
     settings.configure(
         DEBUG=True,
@@ -56,7 +53,6 @@ if not settings.configured:
 
 django.setup()
 
-# manual CORS helper
 ALLOWED_ORIGINS = [
     "https://ngmchatbot.vercel.app",
     "http://localhost:3000",
@@ -72,21 +68,6 @@ def add_cors_headers(request, response: HttpResponse) -> HttpResponse:
     response["Access-Control-Allow-Credentials"] = "true"
     return response
 
-# Example route with manual CORS
-@csrf_exempt
-def check_auth(request):
-    if request.method == "OPTIONS":
-        resp = HttpResponse(status=204)
-        return add_cors_headers(request, resp)
-    data = {"status": "ok", "msg": "Auth check passed"}
-    resp = JsonResponse(data)
-    return add_cors_headers(request, resp)
-
-urlpatterns = [
-    path("checkAuth", check_auth),
-]
-
-# MongoDB Models (using simple classes instead of Django models)
 class User:
     def __init__(self, userName, email, password, _id=None, created_at=None):
         self.id = _id
@@ -109,6 +90,13 @@ class User:
     @classmethod
     def get_by_email(cls, email):
         user_data = users_collection.find_one({'email': email})
+        if user_data:
+            return cls(user_data['userName'], user_data['email'], user_data.get('password', ''), user_data['_id'], user_data['created_at'])
+        return None
+    
+    @classmethod
+    def get_by_email_password(cls, email, password):
+        user_data = users_collection.find_one({'email': email, 'password': password})
         if user_data:
             return cls(user_data['userName'], user_data['email'], user_data.get('password', ''), user_data['_id'], user_data['created_at'])
         return None
@@ -224,7 +212,6 @@ class Conversation:
         return conversations
 
 def ensure_tables():
-    # MongoDB doesn't need table creation, but we can create indexes for performance
     try:
         users_collection.create_index("email", unique=True)
         users_collection.create_index("created_at")
@@ -237,7 +224,6 @@ def ensure_tables():
 
 ensure_tables()
 
-# OpenAI client
 client = OpenAI(api_key=os.environ.get("CHAT_GPT_API"))
 
 def webScrabedData():
@@ -255,7 +241,7 @@ def webScrabedData():
 
 def get_last_5_conversations_as_string():
     conversations = Conversation.all()[:5]
-    conversations = reversed(conversations)  # keep chronological order
+    conversations = reversed(conversations)
 
     result=[]
     for conv in conversations:
@@ -301,7 +287,6 @@ def call_chatgpt(messages: List[Dict]) -> str:
         )
         reply = response.choices[0].message.content.strip()
 
-        # log usage cost in rupees
         usage = response.usage
         usd_prompt = (usage.prompt_tokens / 1000) * 0.03
         usd_completion = (usage.completion_tokens / 1000) * 0.06
@@ -352,46 +337,34 @@ def validate_user_data(userName: str, email: str, password: str = None) -> Optio
         return "Username too long (max 100 chars)"
     if len(email.strip()) > 200:
         return "Email too long (max 200 chars)"
-    # Basic email validation
     if "@" not in email or "." not in email.split("@")[-1]:
         return "Invalid email format"
     return None
 
-def get_or_create_user(userName: str, email: str, password: str = None) -> User:
-    """Get existing user by email or create new one"""
-    existing_user = User.get_by_email(email)
-    if existing_user:
-        # Update userName and password if they're different
-        update_fields = {}
-        if existing_user.userName != userName:
-            update_fields['userName'] = userName
-            existing_user.userName = userName
-        if password and existing_user.password != password:
-            update_fields['password'] = password
-            existing_user.password = password
-        
-        # Update database if there are changes
-        if update_fields:
-            users_collection.update_one(
-                {'_id': existing_user.id},
-                {'$set': update_fields}
-            )
-        return existing_user
-    else:
-        return User.create(userName, email, password or '')
+def user_auth_middleware(request):
+    try:
+        body = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({"error":"Invalid JSON"}, status=400), None
+    
+    email = body.get('email','').strip()
+    password = body.get('password','').strip()
+    
+    if not email or not password:
+        return JsonResponse({"error":"Email and password are required"}, status=401), None
+    
+    user = User.get_by_email_password(email, password)
+    if not user:
+        return JsonResponse({"error":"Invalid credentials"}, status=401), None
+    
+    return None, user
 
-def auth_required(func):
-    def wrapper(request, *args, **kwargs):
-        password = request.headers.get('x-api-key')
-        if password != "Abkr212@ngmc":
-            return JsonResponse({"error":"Unauthorized"}, status=401)
-        return func(request, *args, **kwargs)
-    return wrapper
-
-# Views
 @csrf_exempt
-@auth_required
-def post_chat(request):
+def checkAuth(request):
+    if request.method == "OPTIONS":
+        resp = HttpResponse(status=204)
+        return add_cors_headers(request, resp)
+    
     if request.method != 'POST': 
         return JsonResponse({"error":"POST required"}, status=405)
     
@@ -400,27 +373,53 @@ def post_chat(request):
     except json.JSONDecodeError:
         return JsonResponse({"error":"Invalid JSON"}, status=400)
     
-    user_message = body.get('message','').strip()
+    apikey = body.get('apikey','').strip()
     userName = body.get('userName','').strip()
-    email = body.get('email','').strip()
     password = body.get('password','').strip()
+    email = body.get('email','').strip()
     
-    # Validate message
-    err = validate_message(user_message)
-    if err: 
-        return JsonResponse({"error": err}, status=400)
+    if apikey != "Abkr212@ngmc":
+        return JsonResponse({"error":"Invalid access key"}, status=401)
     
-    # Validate user data
     user_err = validate_user_data(userName, email, password)
     if user_err:
         return JsonResponse({"error": user_err}, status=400)
     
-    # Get or create user
     try:
-        user = get_or_create_user(userName, email, password)
+        existing_user = User.get_by_email(email)
+        if existing_user:
+            resp = JsonResponse({"status": "success", "message": "User already exists"})
+        else:
+            User.create(userName, email, password)
+            resp = JsonResponse({"status": "success", "message": "User created successfully"})
+        return add_cors_headers(request, resp)
     except Exception as e:
         print(f"User creation error: {e}")
         return JsonResponse({"error": "Failed to create/get user"}, status=500)
+
+@csrf_exempt
+def post_chat(request):
+    if request.method == "OPTIONS":
+        resp = HttpResponse(status=204)
+        return add_cors_headers(request, resp)
+    
+    if request.method != 'POST': 
+        return JsonResponse({"error":"POST required"}, status=405)
+    
+    auth_error, user = user_auth_middleware(request)
+    if auth_error:
+        return add_cors_headers(request, auth_error)
+    
+    try:
+        body = json.loads(request.body)
+    except json.JSONDecodeError:
+        return JsonResponse({"error":"Invalid JSON"}, status=400)
+    
+    user_message = body.get('message','').strip()
+    
+    err = validate_message(user_message)
+    if err: 
+        return JsonResponse({"error": err}, status=400)
     
     prompt = f"{ENHANCED_SYSTEM_PROMPT}\nUser Query: {user_message}\nOutput JSON with reply and title only"
     messages = [{"role":"system","content":prompt},{"role":"user","content":user_message}]
@@ -433,23 +432,26 @@ def post_chat(request):
         Conversation(chat.id, 'AI', parsed['reply'])
     ])
     
-    return JsonResponse({
+    resp = JsonResponse({
         "chatId": str(chat.id),
         "reply": parsed['reply'],
         "title": parsed['title'],
         "userId": str(user.id)
     })
+    return add_cors_headers(request, resp)
 
 @csrf_exempt
-@auth_required
-def checkAuth(request): 
-    return JsonResponse({ "status": "Authorized" })
-
-@csrf_exempt
-@auth_required
 def continue_chat(request, chat_id):
+    if request.method == "OPTIONS":
+        resp = HttpResponse(status=204)
+        return add_cors_headers(request, resp)
+    
     if request.method != 'POST': 
         return JsonResponse({"error":"POST required"}, status=405)
+    
+    auth_error, user = user_auth_middleware(request)
+    if auth_error:
+        return add_cors_headers(request, auth_error)
     
     try:
         body = json.loads(request.body)
@@ -457,21 +459,10 @@ def continue_chat(request, chat_id):
         return JsonResponse({"error":"Invalid JSON"}, status=400)
     
     user_message = body.get('message','').strip()
-    userName = body.get('userName','').strip()
-    email = body.get('email','').strip()
-    password = body.get('password','').strip()
-    apikey = body.get('apikey','').strip()
-    if apikey != "Abkr212@ngmc":
-        return JsonResponse({"error":"Unauthorized"}, status=401)
-    # Validate message
+    
     err = validate_message(user_message)
     if err: 
         return JsonResponse({"error": err}, status=400)
-    
-    # Validate user data
-    user_err = validate_user_data(userName, email, password)
-    if user_err:
-        return JsonResponse({"error": user_err}, status=400)
     
     try: 
         chat = Chat.get(chat_id)
@@ -480,18 +471,9 @@ def continue_chat(request, chat_id):
     except Exception: 
         return JsonResponse({"error":"Chat not found"}, status=404)
     
-    # Get or create user
-    try:
-        user = get_or_create_user(userName, email, password)
-    except Exception as e:
-        print(f"User creation error: {e}")
-        return JsonResponse({"error": "Failed to create/get user"}, status=500)
-    
-    # Check if user owns this chat (if chat has a user_id)
     if chat.user_id and str(chat.user_id) != str(user.id):
         return JsonResponse({"error": "Unauthorized to access this chat"}, status=403)
     
-    # If chat doesn't have user_id (old chats), assign current user
     if not chat.user_id:
         chat.user_id = user.id
         chat.save()
@@ -511,19 +493,26 @@ def continue_chat(request, chat_id):
         Conversation(chat.id, 'AI', parsed['reply'])
     ])
     
-    return JsonResponse({
+    resp = JsonResponse({
         "chatId": str(chat.id),
         "reply": parsed['reply'],
         "userId": str(user.id)
     })
+    return add_cors_headers(request, resp)
 
-@auth_required
+@csrf_exempt
 def get_chats(request):
-    # Get all chats with their conversations (backward compatibility)
+    if request.method == "OPTIONS":
+        resp = HttpResponse(status=204)
+        return add_cors_headers(request, resp)
+    
+    auth_error, user = user_auth_middleware(request)
+    if auth_error:
+        return add_cors_headers(request, auth_error)
+    
     chats_data = []
     
     for chat in Chat.all():
-        # Get all conversations for this chat
         conversations = Conversation.filter_by_chat(chat)
         
         chat_data = {
@@ -543,35 +532,26 @@ def get_chats(request):
         }
         chats_data.append(chat_data)
     
-    return JsonResponse(chats_data, safe=False)
+    resp = JsonResponse(chats_data, safe=False)
+    return add_cors_headers(request, resp)
 
 @csrf_exempt
-@auth_required
 def get_user_chats(request):
+    if request.method == "OPTIONS":
+        resp = HttpResponse(status=204)
+        return add_cors_headers(request, resp)
+    
     if request.method != 'POST': 
         return JsonResponse({"error":"POST required"}, status=405)
     
-    try:
-        body = json.loads(request.body)
-    except json.JSONDecodeError:
-        return JsonResponse({"error":"Invalid JSON"}, status=400)
+    auth_error, user = user_auth_middleware(request)
+    if auth_error:
+        return add_cors_headers(request, auth_error)
     
-    email = body.get('email','').strip()
-    
-    if not email:
-        return JsonResponse({"error": "Email is required"}, status=400)
-    
-    # Get user by email
-    user = User.get_by_email(email)
-    if not user:
-        return JsonResponse({"error": "User not found"}, status=404)
-    
-    # Get user's chats
     user_chats = Chat.filter_by_user(user.id)
     chats_data = []
     
     for chat in user_chats:
-        # Get all conversations for this chat
         conversations = Conversation.filter_by_chat(chat)
         
         chat_data = {
@@ -591,7 +571,7 @@ def get_user_chats(request):
         }
         chats_data.append(chat_data)
     
-    return JsonResponse({
+    resp = JsonResponse({
         "user": {
             "id": str(user.id),
             "userName": user.userName,
@@ -599,8 +579,8 @@ def get_user_chats(request):
         },
         "chats": chats_data
     }, safe=False)
+    return add_cors_headers(request, resp)
 
-# URL patterns
 urlpatterns = [
     path('checkAuth/', checkAuth),
     path('postchat/', post_chat),
@@ -615,7 +595,6 @@ headers = {
 
 all_links = {}
 
-# 1. Exam Schedule
 url = "https://coe.ngmc.ac.in/exam-schedule/"
 response = requests.get(url, headers=headers)
 soup = BeautifulSoup(response.text, "html.parser")
@@ -630,7 +609,6 @@ for a_tag in soup.find_all("a"):
         exam_links[key_name] = href
 all_links["exam_schedule"] = exam_links
 
-# 2. Fee Structure
 url = "https://www.ngmc.org/admissions/fee-structure/"
 response = requests.get(url, headers=headers)
 soup = BeautifulSoup(response.text, "html.parser")
@@ -645,7 +623,6 @@ for a_tag in soup.find_all("a"):
         fee_links[key_name] = href
 all_links["fee_structure"] = fee_links
 
-# 3. Seating Arrangements
 url = "https://coe.ngmc.ac.in/seating-arrangements/"
 response = requests.get(url, headers=headers)
 soup = BeautifulSoup(response.text, "html.parser")
@@ -661,7 +638,6 @@ for a_tag in soup.find_all("a"):
             seating_links[key_name] = link
 all_links["seating_arrangements"] = seating_links
 
-# 4. Syllabus
 url = "https://www.ngmc.org/syllabus-list-2/"
 response = requests.get(url, headers=headers)
 soup = BeautifulSoup(response.text, "html.parser")
@@ -677,7 +653,6 @@ for a_tag in soup.find_all("a"):
             syllabus_links[name] = link
 all_links["syllabus"] = syllabus_links
 
-# Save everything to one JSON
 with open("ngmc_college_links.json", "w", encoding="utf-8") as f:
     json.dump(all_links, f, indent=4, ensure_ascii=False)
 
@@ -686,15 +661,12 @@ print(f"Saved data: Exam({len(exam_links)}), Fees({len(fee_links)}), Seating({le
 def clean_json_to_txt(json_file:str, txt_file:str):
     with open(json_file,"r",encoding="utf-8") as f:
         content=f.read()
-    # remove unwanted characters
     for ch in ['[',']','"','{','}',',']:
         content=content.replace(ch,'')
-    # strip spaces and save
     with open(txt_file,"w",encoding="utf-8") as f:
         f.write(content.strip())
     print(f"Cleaned content saved to {txt_file}")
 
-# usage
 clean_json_to_txt("ngmc_college_links.json","links.txt")
 
 if __name__ == '__main__': 

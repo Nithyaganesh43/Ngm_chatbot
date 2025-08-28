@@ -32,25 +32,11 @@ interface Chat {
   conversations: Message[];
 }
 
-interface UserData {
-  id: string;
-  userName: string;
-  email: string;
-  password: string; // Added password field
-  apikey?: string; // Added apikey field
-}
-
 interface ChatInterfaceProps {
   onLogout: () => void;
-  userData: UserData;
-  onUpdateUserData: (userData: UserData) => void;
 }
 
-export default function ChatInterface({
-  onLogout,
-  userData,
-  onUpdateUserData,
-}: ChatInterfaceProps) {
+export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
   const [chats, setChats] = useState<Chat[]>([]);
   const [currentChat, setCurrentChat] = useState<Chat | null>(null);
   const [message, setMessage] = useState('');
@@ -63,6 +49,15 @@ export default function ChatInterface({
   const [showDesktopSidebar, setShowDesktopSidebar] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  // Get user data from localStorage
+  const getUserData = () => {
+    return {
+      userName: localStorage.getItem('ngmc-user-name') || '',
+      email: localStorage.getItem('ngmc-user-email') || '',
+      password: localStorage.getItem('ngmc-auth-key') || '',
+    };
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -84,57 +79,37 @@ export default function ChatInterface({
     loadUserChats();
 
     return () => window.removeEventListener('resize', checkMobile);
-  }, [userData.email]);
-
-  const getAuthHeaders = () => {
-    const authKey = localStorage.getItem('ngmc-auth-key');
-    return {
-      'Content-Type': 'application/json',
-      'x-api-key': authKey || '',
-    };
-  };
-
-  const getApiKey = () => {
-    // Get apikey from localStorage or userData
-    return localStorage.getItem('ngmc-access-key') || userData.apikey || '';
-  };
+  }, []);
 
   const loadUserChats = async () => {
+    const userData = getUserData();
+
     try {
       const response = await fetch(`${API_BASE_URL}/getuserchats/`, {
         method: 'POST',
-        headers: getAuthHeaders(),
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify({
           email: userData.email,
-          apikey: getApiKey(),
+          password: userData.password,
         }),
       });
 
       if (response.ok) {
         const data = await response.json();
         setChats(data.chats || []);
-
-        // Update user data if we got user info back
-        if (data.user && data.user.id && data.user.id !== userData.id) {
-          onUpdateUserData({
-            id: data.user.id,
-            userName: data.user.userName,
-            email: data.user.email,
-            password: userData.password, // Keep existing password
-            apikey: userData.apikey, // Keep existing apikey
-          });
-        }
       } else if (response.status === 404) {
         // User not found, will be created on first chat
         setChats([]);
       } else if (response.status === 401) {
-        // Unauthorized - apikey issue
+        // Unauthorized - authentication issue
         const errorData = await response.json().catch(() => ({}));
         setError(
           errorData.error ||
             'Unauthorized access. Please check your credentials.'
         );
-        // Optionally logout user
+        // Logout user
         onLogout();
       } else {
         console.error('Failed to load user chats:', response.status);
@@ -199,6 +174,7 @@ export default function ChatInterface({
     if (!message.trim() || isLoading) return;
 
     const userMessage = message.trim();
+    const userData = getUserData();
     setMessage('');
 
     // Close sidebar on mobile after sending message
@@ -238,37 +214,31 @@ export default function ChatInterface({
     try {
       const requestBody = {
         message: userMessage,
-        userName: userData.userName,
         email: userData.email,
-        password: userData.password, // Added password to request body
-        apikey: getApiKey(), // Added apikey to request body
+        password: userData.password,
       };
 
       let response;
       if (currentChat && !currentChat.id.startsWith('temp-chat-')) {
         response = await fetch(`${API_BASE_URL}/postchat/${currentChat.id}/`, {
           method: 'POST',
-          headers: getAuthHeaders(),
+          headers: {
+            'Content-Type': 'application/json',
+          },
           body: JSON.stringify(requestBody),
         });
       } else {
         response = await fetch(`${API_BASE_URL}/postchat/`, {
           method: 'POST',
-          headers: getAuthHeaders(),
+          headers: {
+            'Content-Type': 'application/json',
+          },
           body: JSON.stringify(requestBody),
         });
       }
 
       if (response.ok) {
         const data = await response.json();
-
-        // Update user data if userId is returned
-        if (data.userId && data.userId !== userData.id) {
-          onUpdateUserData({
-            ...userData,
-            id: data.userId,
-          });
-        }
 
         // Reload user's chats to get updated data
         await loadUserChats();
@@ -324,13 +294,13 @@ export default function ChatInterface({
           }
         }
       } else if (response.status === 401) {
-        // Unauthorized - apikey issue
+        // Unauthorized - authentication issue
         const errorData = await response.json().catch(() => ({}));
         setError(
           errorData.error ||
             'Unauthorized access. Please check your credentials.'
         );
-        // Optionally logout user
+        // Logout user
         onLogout();
       } else {
         const errorData = await response.json().catch(() => ({}));
@@ -433,6 +403,8 @@ export default function ChatInterface({
   };
 
   const renderMessage = (msg: Message) => {
+    const userData = getUserData();
+
     if (msg.role === 'AI') {
       const markdownLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
       const parts = [];
@@ -552,6 +524,8 @@ export default function ChatInterface({
       <div className="text-sm leading-relaxed">{formatText(msg.message)}</div>
     );
   };
+
+  const userData = getUserData();
 
   return (
     <div className="flex h-screen bg-background text-foreground">
