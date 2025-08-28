@@ -23,7 +23,7 @@ export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loginData, setLoginData] = useState({
-    apikey: 'Abkr212@ngmc',
+    apikey: '',
     userName: '',
     email: '',
     password: '',
@@ -90,6 +90,7 @@ export default function Home() {
 
     // Validate all fields are filled
     if (
+      !loginData.apikey.trim() ||
       !loginData.userName.trim() ||
       !loginData.email.trim() ||
       !loginData.password.trim()
@@ -145,7 +146,7 @@ export default function Home() {
     clearStoredAuth();
     setIsAuthenticated(false);
     setLoginData({
-      apikey: 'Abkr212@ngmc',
+      apikey: '',
       userName: '',
       email: '',
       password: '',
@@ -193,6 +194,22 @@ export default function Home() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="apikey">API Key</Label>
+                <Input
+                  id="apikey"
+                  type="password"
+                  placeholder="Enter your API key"
+                  value={loginData.apikey}
+                  onChange={(e) =>
+                    setLoginData((prev) => ({
+                      ...prev,
+                      apikey: e.target.value,
+                    }))
+                  }
+                  disabled={loginLoading}
+                />
+              </div>
               <div className="space-y-2">
                 <Label htmlFor="userName">Full Name</Label>
                 <Input
