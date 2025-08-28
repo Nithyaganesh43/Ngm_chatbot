@@ -1,201 +1,201 @@
 Associate Professor-> ap
 Dept of Comp. Science
-name Dr.R.Manickachezian
+Dr.R.Manickachezian
 Principal
 Dprt of Computer Science
-name Dr.Antony Selvadoss Thanamani
+Dr.Antony Selvadoss Thanamani
 Ap
-name Dr.R.Manickachezian
+Dr.R.Manickachezian
 Ap
-name Mr.K.Srinivasan
+Mr.K.Srinivasan
 Ap
-name Dr.Aruchamy Rajini
+Dr.Aruchamy Rajini
 Ap
-name Dr. M.Malathi
+Dr. M.Malathi
 Ap
-name Ms.M.Latha
+Ms.M.Latha
 Ap
-name Dr. M. Sakthi
+Dr. M. Sakthi
 Ap
-name Dr. R. Nandhakumar
+Dr. R. Nandhakumar
 Ap
-name Dr. R. Deepa
+Dr. R. Deepa
 Ap
-name M. Dhavapriya
+M. Dhavapriya
 Ap
-name Dr. S. Sharmila
+Dr. S. Sharmila
 Ap
-name Ms. M. Meena Krithika
+Ms. M. Meena Krithika
 Ap
-name Ms. S. S. Shanthi
+Ms. S. S. Shanthi
 Ap
-name Mr. N. Arul Kumar
+Mr. N. Arul Kumar
 Ap
-name Dr. A. Kanagaraj
+Dr. A. Kanagaraj
 Ap
-name Ms. P. Jayapriya
+Ms. P. Jayapriya
 Ap
-name Ms. G. Angayarkanni
+Ms. G. Angayarkanni
 Ap
-name Dr.M.Rathamani
+Dr.M.Rathamani
 Ap
-name Dr. A. Krishnakumar
+Dr. A. Krishnakumar
 Ap
-name Ms. R. Shiddharthy
+Ms. R. Shiddharthy
 Ap
 UG Dprt of CSc with DA
-name Dr. E. Rama Devi
+Dr. E. Rama Devi
 Ap
-name Dr.K.Thilagam
+Dr.K.Thilagam
 Ap
 UG Dprt of CSc with AI & ML
-name Dr.S.Niraimathi
+Dr.S.Niraimathi
 Associate professor
-name Mr. Vignesh. L
+Mr. Vignesh. L
 Ap
-name Dr.B.Azhagusundari
+Dr.B.Azhagusundari
 Associate professor
 UG Dprt of Computer Applications
-name Dr. K. Haridas
+Dr. K. Haridas
 Ap
-name Dr. D. Umamaheswari
+Dr. D. Umamaheswari
 Ap
-name Dr.R.MalathiRavindran
+Dr.R.MalathiRavindran
 Associate professor
-name Mr. S.DilipKumar
+Mr. S.DilipKumar
 Ap
-name Dr.N.Divya
+Dr.N.Divya
 Ap
-name Mr.A.Muruganandham
+Mr.A.Muruganandham
 Ap
-name Mr.D.Poobathi
+Mr.D.Poobathi
 Ap
-name Dr.T.Sumathi
+Dr.T.Sumathi
 Ap
-name Ms.B.Kousalya Devi
+Ms.B.Kousalya Devi
 Ap
 UG Dprt of Mathematics
-name Mr S.Earnest Rajadurai
+Mr S.Earnest Rajadurai
 Ap
-name Mr.R.Abin Prakash
+Mr.R.Abin Prakash
 Ap
 UG Dprt of Information Technology
-name K.Vijayakumar
+K.Vijayakumar
 Ap
-name R.Sekar
+R.Sekar
 Ap
-name C.R.Durga devi
+C.R.Durga devi
 Ap
-name B. Kalaiselvi
+B. Kalaiselvi
 Ap
-name V.Prabavathi
+V.Prabavathi
 Ap
 UG Dprt of Commerce
-name Dr.N.Bagyalakshmi
+Dr.N.Bagyalakshmi
 Ap
-name Ms.G.Nithya
+Ms.G.Nithya
 Ap
-name Dr.S.Kaleeswari
+Dr.S.Kaleeswari
 Ap
-name Dr.N.Giri
+Dr.N.Giri
 Ap
-name Dr.Ahila.D
+Dr.Ahila.D
 Ap
-name Ms.V.Ruba
+Ms.V.Ruba
 Ap
-name Dr.V.Suresh kumar
+Dr.V.Suresh kumar
 Ap
-name Dr.T.S.Kavitha
+Dr.T.S.Kavitha
 Ap
-name Dr.R.Senthilkumar
+Dr.R.Senthilkumar
 Ap
 UG Dprt of Business Administration
-name Mr. D. Bhuvanendran
+Mr. D. Bhuvanendran
 Ap
-name Dr. T. Manikandan
+Dr. T. Manikandan
 Ap
-name Ms. R. Visalakshi
+Ms. R. Visalakshi
 Ap
-name Dr. U. Thaslim Ariff
+Dr. U. Thaslim Ariff
 Ap
-name Ms S.Kalamani
+Ms S.Kalamani
 Ap
-name Ms. M. Manjuladevi
+Ms. M. Manjuladevi
 Ap
 UG Dprt ofE-Commerce
-name Dr.M.V.Sathiyabama
+Dr.M.V.Sathiyabama
 Ap
-name Dr.R.Vidwakalyani
+Dr.R.Vidwakalyani
 Ap
-name Dr.B.Indirapriyadharshini
+Dr.B.Indirapriyadharshini
 Ap
-name Dr.T.Kiruthika
+Dr.T.Kiruthika
 Ap
-name Ms.M.Ragaprabha
+Ms.M.Ragaprabha
 Ap
 UG Dprt of Commerce Finance
-name Dr.G.Akilandeswari
+Dr.G.Akilandeswari
 Ap
-name Mrs.R.Amsaveni
+Mrs.R.Amsaveni
 Ap
-name Mrs.S.Kokilavizhi
+Mrs.S.Kokilavizhi
 Ap
-name Dr.E.Renuga
+Dr.E.Renuga
 Ap
-name Ms.D.Divya
+Ms.D.Divya
 Ap
 UG Dprt of English
-name Mr. Koteeswaran . S
+Mr. Koteeswaran . S
 Ap
-name Ms. Amutha.G
+Ms. Amutha.G
 Ap
 UG Dprt of Computer Technology
-name Dr.M.Rajasenathipathi
+Dr.M.Rajasenathipathi
 Ap
-name Ms.C. Keerthana
+Ms.C. Keerthana
 Ap
-name Ms.K.S. Leelavathi
+Ms.K.S. Leelavathi
 Ap
-name Dr.R. Jayaprakash
+Dr.R. Jayaprakash
 Ap
-name Ms.A. Kalaivani
+Ms.A. Kalaivani
 Ap
 UG Dprt of Commerce Professional Accounting
-name Dr. S. B. Gayathri
+Dr. S. B. Gayathri
 Ap
-name Dr. D. Rajasekaran
+Dr. D. Rajasekaran
 Ap
-name Dr. N. Sumathi
+Dr. N. Sumathi
 Ap
-name Ms. J. Madhubala
+Ms. J. Madhubala
 Ap
-name Dr.D.Padma
+Dr.D.Padma
 Ap
 UG Dprt of Commerce Banking & Insurance
-name Ms. M. Jeeva
+Ms. M. Jeeva
 Ap
-name Ms. A. Anandhiprabha
+Ms. A. Anandhiprabha
 Ap
-name Ms. A. Gomathi
+Ms. A. Gomathi
 Ap
-name Ms. V. Poornima
+Ms. V. Poornima
 Ap
-name Ms.M. Shanmugapriya
+Ms.M. Shanmugapriya
 Ap
 UG Dprt of Commerce Business Process Services
-name Dr. M. Akilanayaki
+Dr. M. Akilanayaki
 Ap
-name Ms. T. Mohanasundari
+Ms. T. Mohanasundari
 Ap
-name Dr. T. Gurusamy
+Dr. T. Gurusamy
 Ap
-name Dr.V. Meera
+Dr.V. Meera
 Ap
-name Dr. R. Sivarajan
+Dr. R. Sivarajan
 Ap
 Dean Academic
-name Dr.S.Saravana Babu
+Dr.S.Saravana Babu
 Dean Academic
 Dean Research
-name Dr.S.Umapathy
+Dr.S.Umapathy
 Dean Research

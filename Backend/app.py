@@ -42,13 +42,13 @@ if not settings.configured:
         ROOT_URLCONF=__name__,
         ALLOWED_HOSTS=['*'],
         INSTALLED_APPS=[
-            'corsheaders',
+            # 'corsheaders',
             'django.contrib.contenttypes',
             'django.contrib.auth',
             __name__,
         ],
         MIDDLEWARE=[
-            'corsheaders.middleware.CorsMiddleware',
+            # 'corsheaders.middleware.CorsMiddleware',
             'django.middleware.common.CommonMiddleware',
         ],
         CORS_ALLOWED_ORIGINS=[
@@ -489,7 +489,19 @@ with open("ngmc_college_links.json", "w", encoding="utf-8") as f:
 
 print(f"Saved data: Exam({len(exam_links)}), Fees({len(fee_links)}), Seating({len(seating_links)}), Syllabus({len(syllabus_links)}) → ngmc_college_links.json")
 
+def clean_json_to_txt(json_file:str, txt_file:str):
+    with open(json_file,"r",encoding="utf-8") as f:
+        content=f.read()
+    # remove unwanted characters
+    for ch in ['[',']','"','{','}',',']:
+        content=content.replace(ch,'')
+    # strip spaces and save
+    with open(txt_file,"w",encoding="utf-8") as f:
+        f.write(content.strip())
+    print(f"Cleaned content saved to {txt_file}")
 
+# usage
+clean_json_to_txt("ngmc_college_links.json","links.txt")
 
 if __name__ == '__main__': 
     from django.core.management.commands.runserver import Command as runserver
