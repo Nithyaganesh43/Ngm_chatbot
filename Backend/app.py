@@ -43,13 +43,13 @@ if not settings.configured:
         ROOT_URLCONF=__name__,
         ALLOWED_HOSTS=['*'],
         INSTALLED_APPS=[
-            # 'corsheaders',
+            'corsheaders',
             'django.contrib.contenttypes',
             'django.contrib.auth',
             __name__,
         ],
         MIDDLEWARE=[
-            # 'corsheaders.middleware.CorsMiddleware',
+            'corsheaders.middleware.CorsMiddleware',
             'django.middleware.common.CommonMiddleware',
         ],
         CORS_ALLOW_ORIGINS=[
