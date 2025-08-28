@@ -512,7 +512,7 @@ def get_chats(request):
     
     chats_data = []
     
-    for chat in Chat.all():
+    for chat in Chat.filter_by_user(user.id):  
         conversations = Conversation.filter_by_chat(chat)
         
         chat_data = {
@@ -534,7 +534,6 @@ def get_chats(request):
     
     resp = JsonResponse(chats_data, safe=False)
     return add_cors_headers(request, resp)
-
 @csrf_exempt
 def get_user_chats(request):
     if request.method == "OPTIONS":
