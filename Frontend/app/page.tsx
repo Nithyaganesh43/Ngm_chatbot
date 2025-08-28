@@ -34,6 +34,7 @@ export default function Home() {
     name: '',
     email: '',
     password: '',
+    apikey: '', // Added apikey field
   });
   const [loginLoading, setLoginLoading] = useState(false);
   const [error, setError] = useState('');
@@ -88,7 +89,8 @@ export default function Home() {
     if (
       !loginData.name.trim() ||
       !loginData.email.trim() ||
-      !loginData.password.trim()
+      !loginData.password.trim() ||
+      !loginData.apikey.trim()
     ) {
       setError('All fields are required');
       setLoginLoading(false);
@@ -97,18 +99,23 @@ export default function Home() {
 
     // Basic email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(loginData.email)) {
+    if (!emailData.test(loginData.email)) {
       setError('Please enter a valid email address');
       setLoginLoading(false);
       return;
     }
 
     try {
-      // First check if the API key is valid
+      // First check auth with both password and apikey
       const authResponse = await fetch(`${API_BASE_URL}/checkAuth/`, {
+        method: 'POST',
         headers: {
+          'Content-Type': 'application/json',
           'x-api-key': loginData.password,
         },
+        body: JSON.stringify({
+          apikey: loginData.apikey,
+        }),
       });
 
       if (authResponse.ok) {
@@ -127,7 +134,11 @@ export default function Home() {
 
         setIsAuthenticated(true);
       } else {
-        setError('Invalid access key. Please check your credentials.');
+        const errorData = await authResponse.json();
+        setError(
+          errorData.error ||
+            'Invalid credentials. Please check your access key and password.'
+        );
       }
     } catch (error) {
       console.error('Login failed:', error);
@@ -143,7 +154,7 @@ export default function Home() {
     localStorage.removeItem('ngmc-user-email');
     setIsAuthenticated(false);
     setUserData(null);
-    setLoginData({ name: '', email: '', password: '' });
+    setLoginData({ name: '', email: '', password: '', apikey: '' });
   };
 
   const updateUserData = (newUserData: UserData) => {
@@ -213,16 +224,32 @@ export default function Home() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Access Key</Label>
+                <Label htmlFor="password">Password </Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter your access key"
+                  placeholder="Enter your password"
                   value={loginData.password}
                   onChange={(e) =>
                     setLoginData((prev) => ({
                       ...prev,
                       password: e.target.value,
+                    }))
+                  }
+                  disabled={loginLoading}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="apikey">Access Key</Label>
+                <Input
+                  id="apikey"
+                  type="password"
+                  placeholder="Enter your access key"
+                  value={loginData.apikey}
+                  onChange={(e) =>
+                    setLoginData((prev) => ({
+                      ...prev,
+                      apikey: e.target.value,
                     }))
                   }
                   disabled={loginLoading}

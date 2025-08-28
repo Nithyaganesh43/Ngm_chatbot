@@ -37,6 +37,7 @@ interface UserData {
   userName: string;
   email: string;
   password: string; // Added password field
+  apikey?: string; // Added apikey field
 }
 
 interface ChatInterfaceProps {
@@ -93,6 +94,11 @@ export default function ChatInterface({
     };
   };
 
+  const getApiKey = () => {
+    // Get apikey from localStorage or userData
+    return localStorage.getItem('ngmc-access-key') || userData.apikey || '';
+  };
+
   const loadUserChats = async () => {
     try {
       const response = await fetch(`${API_BASE_URL}/getuserchats/`, {
@@ -100,6 +106,7 @@ export default function ChatInterface({
         headers: getAuthHeaders(),
         body: JSON.stringify({
           email: userData.email,
+          apikey: getApiKey(),
         }),
       });
 
@@ -114,11 +121,21 @@ export default function ChatInterface({
             userName: data.user.userName,
             email: data.user.email,
             password: userData.password, // Keep existing password
+            apikey: userData.apikey, // Keep existing apikey
           });
         }
       } else if (response.status === 404) {
         // User not found, will be created on first chat
         setChats([]);
+      } else if (response.status === 401) {
+        // Unauthorized - apikey issue
+        const errorData = await response.json().catch(() => ({}));
+        setError(
+          errorData.error ||
+            'Unauthorized access. Please check your credentials.'
+        );
+        // Optionally logout user
+        onLogout();
       } else {
         console.error('Failed to load user chats:', response.status);
         setChats([]);
@@ -224,6 +241,7 @@ export default function ChatInterface({
         userName: userData.userName,
         email: userData.email,
         password: userData.password, // Added password to request body
+        apikey: getApiKey(), // Added apikey to request body
       };
 
       let response;
@@ -305,6 +323,15 @@ export default function ChatInterface({
             autoOpenPdf(latestMessage.message);
           }
         }
+      } else if (response.status === 401) {
+        // Unauthorized - apikey issue
+        const errorData = await response.json().catch(() => ({}));
+        setError(
+          errorData.error ||
+            'Unauthorized access. Please check your credentials.'
+        );
+        // Optionally logout user
+        onLogout();
       } else {
         const errorData = await response.json().catch(() => ({}));
         setError(
