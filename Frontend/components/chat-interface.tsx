@@ -11,8 +11,8 @@ import {
   LogOut,
   FileText,
   X,
-  Mic,
-  MicOff,
+  Menu,
+  ChevronLeft,
 } from 'lucide-react';
 
 const API_BASE_URL = 'https://ngmchatbot.onrender.com';
@@ -45,8 +45,9 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
   const [pdfTitle, setPdfTitle] = useState('');
-  const [isListening, setIsListening] = useState(false);
-  const [recognition, setRecognition] = useState<any>(null);
+  const [showSidebar, setShowSidebar] = useState(false);
+  const [showDesktopSidebar, setShowDesktopSidebar] = useState(true);
+  const [isMobile, setIsMobile] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -58,93 +59,19 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
   }, [currentChat?.conversations]);
 
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+
     const name = localStorage.getItem('ngmc-user-name') || 'User';
     setUserName(name);
     loadChats();
-    initializeSpeechRecognition();
+
+    return () => window.removeEventListener('resize', checkMobile);
   }, []);
-
-  const initializeSpeechRecognition = () => {
-    if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
-      const SpeechRecognition =
-        (window as any).SpeechRecognition ||
-        (window as any).webkitSpeechRecognition;
-      const recognitionInstance = new SpeechRecognition();
-
-      recognitionInstance.continuous = true;
-      recognitionInstance.interimResults = true;
-      recognitionInstance.lang = 'en-US';
-
-      recognitionInstance.onstart = () => {
-        setIsListening(true);
-      };
-
-      recognitionInstance.onresult = (event: any) => {
-        let interimTranscript = '';
-        let finalTranscript = '';
-
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const transcript = event.results[i][0].transcript;
-          if (event.results[i].isFinal) {
-            finalTranscript += transcript;
-          } else {
-            interimTranscript += transcript;
-          }
-        }
-
-        if (finalTranscript) {
-          setMessage((prev) => {
-            const newText = prev
-              ? prev + ' ' + finalTranscript
-              : finalTranscript;
-            return newText.trim();
-          });
-        }
-
-        if (interimTranscript && !finalTranscript) {
-          const currentValue = message || '';
-          setMessage(
-            currentValue + (currentValue ? ' ' : '') + interimTranscript
-          );
-        }
-      };
-
-      recognitionInstance.onerror = (event: any) => {
-        console.error('Speech recognition error:', event.error);
-        setIsListening(false);
-        if (event.error === 'not-allowed') {
-          setError(
-            'Microphone access denied. Please allow microphone access and try again.'
-          );
-        } else if (event.error === 'no-speech') {
-          setError('No speech detected. Please try again.');
-        } else {
-          setError('Speech recognition error. Please try again.');
-        }
-      };
-
-      recognitionInstance.onend = () => {
-        setIsListening(false);
-      };
-
-      setRecognition(recognitionInstance);
-    }
-  };
-
-  const toggleVoiceInput = () => {
-    if (!recognition) {
-      setError('Speech recognition is not supported in this browser.');
-      return;
-    }
-
-    if (isListening) {
-      recognition.stop();
-      setIsListening(false);
-    } else {
-      setError('');
-      recognition.start();
-    }
-  };
 
   const getAuthHeaders = () => {
     const authKey = localStorage.getItem('ngmc-auth-key');
@@ -194,9 +121,20 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
   };
 
   const handlePdfClick = (url: string, title: string) => {
-    setPdfUrl(url);
-    setPdfTitle(title);
-    setShowPdfViewer(true);
+    // Only show PDF viewer on desktop
+    if (!isMobile) {
+      setPdfUrl(url);
+      setPdfTitle(title);
+      setShowPdfViewer(true);
+    } else {
+      // On mobile, open PDF in new tab
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+
+    // Close sidebar on mobile when PDF opens
+    if (isMobile) {
+      setShowSidebar(false);
+    }
   };
 
   const autoOpenPdf = (message: string) => {
@@ -209,12 +147,13 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
   const handleSendMessage = async () => {
     if (!message.trim() || isLoading) return;
 
-    if (isListening && recognition) {
-      recognition.stop();
-    }
-
     const userMessage = message.trim();
     setMessage('');
+
+    // Close sidebar on mobile after sending message
+    if (isMobile) {
+      setShowSidebar(false);
+    }
 
     const tempUserMessage: Message = {
       id: `temp-${Date.now()}`,
@@ -362,8 +301,9 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     setShowPdfViewer(false);
     setPdfUrl('');
     setPdfTitle('');
-    if (isListening && recognition) {
-      recognition.stop();
+    // Close sidebar on mobile when starting new chat
+    if (isMobile) {
+      setShowSidebar(false);
     }
   };
 
@@ -372,8 +312,9 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     setShowPdfViewer(false);
     setPdfUrl('');
     setPdfTitle('');
-    if (isListening && recognition) {
-      recognition.stop();
+    // Close sidebar on mobile when selecting chat
+    if (isMobile) {
+      setShowSidebar(false);
     }
   };
 
@@ -447,25 +388,43 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
             if (part.type === 'link') {
               if (part.isPdf) {
                 return (
-                  <Button
-                    key={index}
-                    variant="link"
-                    className="text-blue-500 hover:text-blue-400 underline p-0 h-auto font-normal text-sm inline break-all max-w-full"
-                    onClick={() => handlePdfClick(part.url, part.title)}>
-                    <span className="break-words">{part.title}</span>
-                  </Button>
+                  <div key={index} className="inline-block w-full">
+                    <Button
+                      variant="link"
+                      className="text-blue-500 hover:text-blue-400 underline p-0 h-auto font-normal text-sm text-left whitespace-normal break-words max-w-full"
+                      onClick={() => handlePdfClick(part.url, part.title)}
+                      style={{
+                        wordBreak: 'break-word',
+                        overflowWrap: 'break-word',
+                        whiteSpace: 'normal',
+                        display: 'inline-block',
+                        width: 'auto',
+                        maxWidth: '100%',
+                      }}>
+                      {part.title}
+                    </Button>
+                  </div>
                 );
               } else {
                 return (
-                  <Button
-                    key={index}
-                    variant="link"
-                    className="text-blue-500 hover:text-blue-400 underline p-0 h-auto font-normal text-sm inline break-all max-w-full"
-                    onClick={() =>
-                      window.open(part.url, '_blank', 'noopener,noreferrer')
-                    }>
-                    <span className="break-words">{part.title}</span>
-                  </Button>
+                  <div key={index} className="inline-block w-full">
+                    <Button
+                      variant="link"
+                      className="text-blue-500 hover:text-blue-400 underline p-0 h-auto font-normal text-sm text-left whitespace-normal break-words max-w-full"
+                      onClick={() =>
+                        window.open(part.url, '_blank', 'noopener,noreferrer')
+                      }
+                      style={{
+                        wordBreak: 'break-word',
+                        overflowWrap: 'break-word',
+                        whiteSpace: 'normal',
+                        display: 'inline-block',
+                        width: 'auto',
+                        maxWidth: '100%',
+                      }}>
+                      {part.title}
+                    </Button>
+                  </div>
                 );
               }
             } else {
@@ -473,7 +432,7 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
               return (
                 <span key={index}>
                   {lines.map((line, lineIndex) => {
-                    const boldParts = line.split(/(\*\*[^*]+\*\*)/g);
+                    const boldParts = line.split(/(\*\*[^\*]+\*\*)/g);
                     return (
                       <span key={lineIndex}>
                         {lineIndex > 0 && <br />}
@@ -510,71 +469,141 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
 
   return (
     <div className="flex h-screen bg-background text-foreground">
-      <div className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col h-screen">
-        <div className="p-4 border-b border-sidebar-border flex-shrink-0">
-          <div className="flex items-center gap-3 mb-4">
-            <img
-              src="https://www.ngmc.org/wp-content/uploads/2024/08/logoblue.png"
-              alt="NGMC Logo"
-              className="h-8 w-auto"
-            />
-            <div className="text-sm font-medium text-sidebar-foreground">
-              NGMC Chat
-            </div>
-          </div>
-          <Button
-            onClick={startNewChat}
-            className="w-full justify-start gap-2 bg-transparent"
-            variant="outline">
-            <Plus className="h-4 w-4" />
-            New chat
-          </Button>
-        </div>
+      {/* Mobile overlay for sidebar */}
+      {showSidebar && isMobile && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setShowSidebar(false)}
+        />
+      )}
 
-        <div className="flex-1 min-h-0 overflow-hidden">
-          <ScrollArea className="h-full p-2">
-            <div className="space-y-1">
-              {chats.map((chat) => (
-                <Button
-                  key={chat.id}
-                  onClick={() => selectChat(chat)}
-                  variant={currentChat?.id === chat.id ? 'secondary' : 'ghost'}
-                  className="w-full justify-start text-left h-auto p-3">
-                  <div className="truncate text-sm">{chat.title}</div>
-                </Button>
-              ))}
+      {/* Sidebar - Original PC design maintained */}
+      {(showDesktopSidebar || showSidebar) && (
+        <div
+          className={`
+          w-64 bg-sidebar border-r border-sidebar-border flex flex-col h-screen
+          ${isMobile ? 'fixed z-50' : 'relative'}
+          ${isMobile && showSidebar ? 'translate-x-0' : ''}
+          ${isMobile && !showSidebar ? '-translate-x-full' : ''}
+          transition-transform duration-300 ease-in-out
+        `}>
+          {/* Desktop close button */}
+          {!isMobile && (
+            <div className="p-2 flex justify-end">
+              <Button
+                onClick={() => setShowDesktopSidebar(false)}
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 p-0">
+                <ChevronLeft className="h-4 w-4" />
+              </Button>
             </div>
-          </ScrollArea>
-        </div>
+          )}
 
-        <div className="p-4 border-t border-sidebar-border flex-shrink-0">
-          <div className="flex items-center gap-3">
-            <Avatar className="h-8 w-8">
-              <AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground text-sm">
-                {userName.charAt(0).toUpperCase()}
-              </AvatarFallback>
-            </Avatar>
-            <div className="flex-1 min-w-0">
-              <div className="text-sm font-medium text-sidebar-foreground truncate">
-                {userName}
+          <div className="p-4 border-b border-sidebar-border flex-shrink-0">
+            <div className="flex items-center gap-3 mb-4">
+              <img
+                src="https://www.ngmc.org/wp-content/uploads/2024/08/logoblue.png"
+                alt="NGMC Logo"
+                className="h-8 w-auto"
+              />
+              <div className="text-sm font-medium text-sidebar-foreground">
+                NGMC Chat
               </div>
             </div>
             <Button
-              onClick={onLogout}
+              onClick={startNewChat}
+              className="w-full justify-start gap-2 bg-transparent"
+              variant="outline">
+              <Plus className="h-4 w-4" />
+              New chat
+            </Button>
+          </div>
+
+          <div className="flex-1 min-h-0 overflow-hidden">
+            <ScrollArea className="h-full p-2">
+              <div className="space-y-1">
+                {chats.map((chat) => (
+                  <Button
+                    key={chat.id}
+                    onClick={() => selectChat(chat)}
+                    variant={
+                      currentChat?.id === chat.id ? 'secondary' : 'ghost'
+                    }
+                    className="w-full justify-start text-left h-auto p-3">
+                    <div className="truncate text-sm">{chat.title}</div>
+                  </Button>
+                ))}
+              </div>
+            </ScrollArea>
+          </div>
+
+          {/* Profile section - Fixed at bottom */}
+          <div className="p-4 border-t border-sidebar-border flex-shrink-0 mt-auto">
+            <div className="flex items-center gap-3">
+              <Avatar className="h-8 w-8">
+                <AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground text-sm">
+                  {userName.charAt(0).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
+              <div className="flex-1 min-w-0">
+                <div className="text-sm font-medium text-sidebar-foreground truncate">
+                  {userName}
+                </div>
+              </div>
+              <Button
+                onClick={onLogout}
+                variant="ghost"
+                size="sm"
+                className="h-8 w-8 p-0">
+                <LogOut className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Main content area */}
+      <div
+        className={`flex-1 flex flex-col ${
+          showPdfViewer && !isMobile ? 'w-1/2' : ''
+        }`}>
+        {/* Header for both mobile and desktop when sidebar is hidden */}
+        {(isMobile || !showDesktopSidebar) && (
+          <div className="flex items-center justify-between p-3 md:p-4 border-b border-border bg-background flex-shrink-0">
+            <Button
+              onClick={() => {
+                if (isMobile) {
+                  setShowSidebar(true);
+                } else {
+                  setShowDesktopSidebar(true);
+                }
+              }}
               variant="ghost"
               size="sm"
               className="h-8 w-8 p-0">
-              <LogOut className="h-4 w-4" />
+              <Menu className="h-4 w-4" />
             </Button>
+            <div className="flex items-center gap-2">
+              <img
+                src="https://www.ngmc.org/wp-content/uploads/2024/08/logoblue.png"
+                alt="NGMC Logo"
+                className="h-6 w-auto"
+              />
+              <div className="text-sm font-medium">NGMC Chat</div>
+            </div>
+            <div className="w-8"></div> {/* Spacer for centering */}
           </div>
-        </div>
-      </div>
+        )}
 
-      <div className={`flex-1 flex flex-col ${showPdfViewer ? 'w-1/2' : ''}`}>
+        {/* Messages area */}
         <div className="flex-1 overflow-hidden">
           <ScrollArea className="h-full p-4">
             {currentChat ? (
-              <div className="space-y-6 max-w-3xl mx-auto pb-4">
+              <div
+                className={`space-y-6 max-w-3xl mx-auto ${
+                  isMobile ? 'pb-20' : 'pb-4'
+                }`}>
                 {currentChat.conversations
                   .filter((msg) => !msg.id.startsWith('temp-'))
                   .map((msg) => (
@@ -688,7 +717,12 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
           </ScrollArea>
         </div>
 
-        <div className="p-4 border-t border-border flex-shrink-0">
+        {/* Input area - Fixed at bottom on mobile, normal on desktop */}
+        <div
+          className={`
+          p-4 border-t border-border bg-background flex-shrink-0
+          ${isMobile ? 'fixed bottom-0 left-0 right-0 z-30' : ''}
+        `}>
           <div className="max-w-3xl mx-auto">
             {error && (
               <Alert variant="destructive" className="mb-4">
@@ -699,7 +733,7 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
               <Input
                 value={message}
                 onChange={(e) => setMessage(e.target.value)}
-                placeholder={isListening ? 'Listening...' : 'Ask anything...'}
+                placeholder="Ask anything..."
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -707,22 +741,8 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
                   }
                 }}
                 disabled={isLoading}
-                className={`flex-1 ${
-                  isListening ? 'ring-2 ring-red-500 ring-opacity-50' : ''
-                }`}
+                className="flex-1"
               />
-              <Button
-                onClick={toggleVoiceInput}
-                disabled={isLoading}
-                size="icon"
-                variant={isListening ? 'destructive' : 'outline'}
-                className={isListening ? 'animate-pulse' : ''}>
-                {isListening ? (
-                  <MicOff className="h-4 w-4" />
-                ) : (
-                  <Mic className="h-4 w-4" />
-                )}
-              </Button>
               <Button
                 onClick={handleSendMessage}
                 disabled={isLoading || !message.trim()}
@@ -734,17 +754,12 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
                 )}
               </Button>
             </div>
-            {isListening && (
-              <div className="mt-2 text-sm text-muted-foreground flex items-center gap-2">
-                <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse"></div>
-                Listening... Click the microphone again to stop
-              </div>
-            )}
           </div>
         </div>
       </div>
 
-      {showPdfViewer && (
+      {/* PDF Viewer - Desktop only */}
+      {showPdfViewer && !isMobile && (
         <div className="w-1/2 border-l border-border bg-card flex flex-col">
           <div className="p-4 border-b border-border flex items-center justify-between flex-shrink-0">
             <div className="flex items-center gap-2">

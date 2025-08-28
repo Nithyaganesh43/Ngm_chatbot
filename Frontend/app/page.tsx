@@ -32,9 +32,9 @@ export default function Home() {
         try {
           const response = await fetch(`${API_BASE_URL}/checkAuth`, {
             headers: {
-              'x-api-key': storedPassword,
+              "x-api-key": storedPassword,
             },
-          });
+          })
           if (response.ok) {
             setIsAuthenticated(true)
           } else {
