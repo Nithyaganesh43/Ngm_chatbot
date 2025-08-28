@@ -26,6 +26,7 @@ export default function Home() {
     userName: '',
     email: '',
     password: '',
+    accessKey: '',
   });
   const [loginLoading, setLoginLoading] = useState(false);
   const [error, setError] = useState('');
@@ -36,8 +37,9 @@ export default function Home() {
       const storedUserName = localStorage.getItem('ngmc-user-name');
       const storedEmail = localStorage.getItem('ngmc-user-email');
       const storedPassword = localStorage.getItem('ngmc-password');
+      const storedAccessKey = localStorage.getItem('ngmc-access-key');
 
-      if (storedUserName && storedEmail && storedPassword) {
+      if (storedUserName && storedEmail && storedPassword && storedAccessKey) {
         try {
           const response = await fetch(`${API_BASE_URL}/checkAuth/`, {
             method: 'POST',
@@ -45,7 +47,7 @@ export default function Home() {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              apikey: storedPassword, // Use stored password as API key
+              apikey: storedAccessKey, // Use stored access key as API key
               userName: storedUserName,
               email: storedEmail,
               password: storedPassword,
@@ -78,6 +80,7 @@ export default function Home() {
     localStorage.removeItem('ngmc-user-name');
     localStorage.removeItem('ngmc-user-email');
     localStorage.removeItem('ngmc-password');
+    localStorage.removeItem('ngmc-access-key');
   };
 
   const handleLogin = async (e: React.FormEvent) => {
@@ -89,7 +92,8 @@ export default function Home() {
     if (
       !loginData.userName.trim() ||
       !loginData.email.trim() ||
-      !loginData.password.trim()
+      !loginData.password.trim() ||
+      !loginData.accessKey.trim()
     ) {
       setError('All fields are required');
       setLoginLoading(false);
@@ -103,7 +107,7 @@ export default function Home() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          apikey: loginData.password, // Use password as API key
+          apikey: loginData.accessKey, // Use access key as API key
           userName: loginData.userName,
           email: loginData.email,
           password: loginData.password,
@@ -117,6 +121,7 @@ export default function Home() {
           localStorage.setItem('ngmc-user-name', loginData.userName);
           localStorage.setItem('ngmc-user-email', loginData.email);
           localStorage.setItem('ngmc-password', loginData.password);
+          localStorage.setItem('ngmc-access-key', loginData.accessKey);
 
           setIsAuthenticated(true);
         } else {
@@ -144,17 +149,17 @@ export default function Home() {
       userName: '',
       email: '',
       password: '',
+      accessKey: '',
     });
   };
 
   // Get stored auth data for chat interface
   const getStoredAuthData = () => {
-    const password = localStorage.getItem('ngmc-password') || '';
     return {
-      apikey: password, // Use password as API key
+      apikey: localStorage.getItem('ngmc-access-key') || '', // Use access key as API key
       userName: localStorage.getItem('ngmc-user-name') || '',
       email: localStorage.getItem('ngmc-user-email') || '',
-      password: password,
+      password: localStorage.getItem('ngmc-password') || '',
     };
   };
 
@@ -219,16 +224,32 @@ export default function Home() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Access Key</Label>
+                <Label htmlFor="password">Password</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter your access key"
+                  placeholder="Enter your password"
                   value={loginData.password}
                   onChange={(e) =>
                     setLoginData((prev) => ({
                       ...prev,
                       password: e.target.value,
+                    }))
+                  }
+                  disabled={loginLoading}
+                />
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="accessKey">Access Key</Label>
+                <Input
+                  id="accessKey"
+                  type="password"
+                  placeholder="Enter your access key"
+                  value={loginData.accessKey}
+                  onChange={(e) =>
+                    setLoginData((prev) => ({
+                      ...prev,
+                      accessKey: e.target.value,
                     }))
                   }
                   disabled={loginLoading}
