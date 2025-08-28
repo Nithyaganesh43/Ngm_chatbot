@@ -23,7 +23,8 @@ export default function Home() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [loginData, setLoginData] = useState({
-    name: '',
+    apikey: 'Abkr212@ngmc',
+    userName: '',
     email: '',
     password: '',
   });
@@ -33,11 +34,12 @@ export default function Home() {
   // Check if user is already authenticated
   useEffect(() => {
     const checkAuth = async () => {
-      const storedName = localStorage.getItem('ngmc-user-name');
+      const storedApikey = localStorage.getItem('ngmc-apikey');
+      const storedUserName = localStorage.getItem('ngmc-user-name');
       const storedEmail = localStorage.getItem('ngmc-user-email');
-      const storedPassword = localStorage.getItem('ngmc-auth-key');
+      const storedPassword = localStorage.getItem('ngmc-password');
 
-      if (storedName && storedEmail && storedPassword) {
+      if (storedApikey && storedUserName && storedEmail && storedPassword) {
         try {
           const response = await fetch(`${API_BASE_URL}/checkAuth/`, {
             method: 'POST',
@@ -45,25 +47,27 @@ export default function Home() {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              apikey: 'Abkr212@ngmc',
-              userName: storedName,
+              apikey: storedApikey,
+              userName: storedUserName,
               email: storedEmail,
               password: storedPassword,
             }),
           });
 
           if (response.ok) {
-            setIsAuthenticated(true);
+            const data = await response.json();
+            if (data.status === 'success') {
+              setIsAuthenticated(true);
+            } else {
+              // Clear invalid stored data
+              clearStoredAuth();
+            }
           } else {
-            localStorage.removeItem('ngmc-auth-key');
-            localStorage.removeItem('ngmc-user-name');
-            localStorage.removeItem('ngmc-user-email');
+            clearStoredAuth();
           }
         } catch (error) {
           console.error('Auth check failed:', error);
-          localStorage.removeItem('ngmc-auth-key');
-          localStorage.removeItem('ngmc-user-name');
-          localStorage.removeItem('ngmc-user-email');
+          clearStoredAuth();
         }
       }
       setIsLoading(false);
@@ -72,13 +76,21 @@ export default function Home() {
     checkAuth();
   }, []);
 
+  const clearStoredAuth = () => {
+    localStorage.removeItem('ngmc-apikey');
+    localStorage.removeItem('ngmc-user-name');
+    localStorage.removeItem('ngmc-user-email');
+    localStorage.removeItem('ngmc-password');
+  };
+
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoginLoading(true);
     setError('');
 
+    // Validate all fields are filled
     if (
-      !loginData.name.trim() ||
+      !loginData.userName.trim() ||
       !loginData.email.trim() ||
       !loginData.password.trim()
     ) {
@@ -94,19 +106,26 @@ export default function Home() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          apikey: 'Abkr212@ngmc',
-          userName: loginData.name,
+          apikey: loginData.apikey,
+          userName: loginData.userName,
           email: loginData.email,
           password: loginData.password,
         }),
       });
 
       if (response.ok) {
-        // Store auth data in localStorage
-        localStorage.setItem('ngmc-auth-key', loginData.password);
-        localStorage.setItem('ngmc-user-name', loginData.name);
-        localStorage.setItem('ngmc-user-email', loginData.email);
-        setIsAuthenticated(true);
+        const data = await response.json();
+        if (data.status === 'success') {
+          // Store all 4 auth data fields in localStorage on success
+          localStorage.setItem('ngmc-apikey', loginData.apikey);
+          localStorage.setItem('ngmc-user-name', loginData.userName);
+          localStorage.setItem('ngmc-user-email', loginData.email);
+          localStorage.setItem('ngmc-password', loginData.password);
+
+          setIsAuthenticated(true);
+        } else {
+          setError(data.message || 'Authentication failed');
+        }
       } else {
         const errorData = await response.json();
         setError(
@@ -123,11 +142,24 @@ export default function Home() {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('ngmc-auth-key');
-    localStorage.removeItem('ngmc-user-name');
-    localStorage.removeItem('ngmc-user-email');
+    clearStoredAuth();
     setIsAuthenticated(false);
-    setLoginData({ name: '', email: '', password: '' });
+    setLoginData({
+      apikey: 'Abkr212@ngmc',
+      userName: '',
+      email: '',
+      password: '',
+    });
+  };
+
+  // Get stored auth data for chat interface
+  const getStoredAuthData = () => {
+    return {
+      apikey: localStorage.getItem('ngmc-apikey') || '',
+      userName: localStorage.getItem('ngmc-user-name') || '',
+      email: localStorage.getItem('ngmc-user-email') || '',
+      password: localStorage.getItem('ngmc-password') || '',
+    };
   };
 
   if (isLoading) {
@@ -162,14 +194,17 @@ export default function Home() {
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Full Name</Label>
+                <Label htmlFor="userName">Full Name</Label>
                 <Input
-                  id="name"
+                  id="userName"
                   type="text"
                   placeholder="Enter your full name"
-                  value={loginData.name}
+                  value={loginData.userName}
                   onChange={(e) =>
-                    setLoginData((prev) => ({ ...prev, name: e.target.value }))
+                    setLoginData((prev) => ({
+                      ...prev,
+                      userName: e.target.value,
+                    }))
                   }
                   disabled={loginLoading}
                 />
@@ -226,5 +261,7 @@ export default function Home() {
     );
   }
 
-  return <ChatInterface onLogout={handleLogout} />;
+  return (
+    <ChatInterface onLogout={handleLogout} authData={getStoredAuthData()} />
+  );
 }

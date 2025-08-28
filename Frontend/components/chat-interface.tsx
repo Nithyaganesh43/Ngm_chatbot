@@ -27,21 +27,32 @@ interface Message {
 interface Chat {
   id: string;
   title: string;
-  user_id?: string;
   created_at: string;
   conversations: Message[];
 }
 
-interface ChatInterfaceProps {
-  onLogout: () => void;
+interface AuthData {
+  apikey: string;
+  userName: string;
+  email: string;
+  password: string;
 }
 
-export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
+interface ChatInterfaceProps {
+  onLogout: () => void;
+  authData: AuthData;
+}
+
+export default function ChatInterface({
+  onLogout,
+  authData,
+}: ChatInterfaceProps) {
   const [chats, setChats] = useState<Chat[]>([]);
   const [currentChat, setCurrentChat] = useState<Chat | null>(null);
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [userName, setUserName] = useState('');
   const [showPdfViewer, setShowPdfViewer] = useState(false);
   const [pdfUrl, setPdfUrl] = useState('');
   const [pdfTitle, setPdfTitle] = useState('');
@@ -49,15 +60,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
   const [showDesktopSidebar, setShowDesktopSidebar] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
-
-  // Get user data from localStorage
-  const getUserData = () => {
-    return {
-      userName: localStorage.getItem('ngmc-user-name') || '',
-      email: localStorage.getItem('ngmc-user-email') || '',
-      password: localStorage.getItem('ngmc-auth-key') || '',
-    };
-  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -75,49 +77,36 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     checkMobile();
     window.addEventListener('resize', checkMobile);
 
-    // Load user's specific chats
-    loadUserChats();
+    // Use authData userName instead of localStorage
+    setUserName(authData.userName || 'User');
+    loadChats();
 
     return () => window.removeEventListener('resize', checkMobile);
-  }, []);
+  }, [authData]);
 
-  const loadUserChats = async () => {
-    const userData = getUserData();
+  const getAuthRequestBody = (additionalData = {}) => {
+    return {
+      email: authData.email,
+      password: authData.password,
+      ...additionalData,
+    };
+  };
 
+  const loadChats = async () => {
     try {
-      const response = await fetch(`${API_BASE_URL}/getuserchats/`, {
+      const response = await fetch(`${API_BASE_URL}/getchat/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email: userData.email,
-          password: userData.password,
-        }),
+        body: JSON.stringify(getAuthRequestBody()),
       });
-
       if (response.ok) {
         const data = await response.json();
-        setChats(data.chats || []);
-      } else if (response.status === 404) {
-        // User not found, will be created on first chat
-        setChats([]);
-      } else if (response.status === 401) {
-        // Unauthorized - authentication issue
-        const errorData = await response.json().catch(() => ({}));
-        setError(
-          errorData.error ||
-            'Unauthorized access. Please check your credentials.'
-        );
-        // Logout user
-        onLogout();
-      } else {
-        console.error('Failed to load user chats:', response.status);
-        setChats([]);
+        setChats(data);
       }
     } catch (error) {
-      console.error('Failed to load user chats:', error);
-      setChats([]);
+      console.error('Failed to load chats:', error);
     }
   };
 
@@ -174,7 +163,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     if (!message.trim() || isLoading) return;
 
     const userMessage = message.trim();
-    const userData = getUserData();
     setMessage('');
 
     // Close sidebar on mobile after sending message
@@ -212,80 +200,85 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     setError('');
 
     try {
-      const requestBody = {
-        message: userMessage,
-        email: userData.email,
-        password: userData.password,
-      };
-
       let response;
-      if (currentChat && !currentChat.id.startsWith('temp-chat-')) {
+      if (currentChat) {
+        // Send message to existing chat
         response = await fetch(`${API_BASE_URL}/postchat/${currentChat.id}/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(requestBody),
+          body: JSON.stringify(getAuthRequestBody({ message: userMessage })),
         });
       } else {
+        // Create new chat with first message
         response = await fetch(`${API_BASE_URL}/postchat/`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(requestBody),
+          body: JSON.stringify(getAuthRequestBody({ message: userMessage })),
         });
       }
 
       if (response.ok) {
         const data = await response.json();
 
-        // Reload user's chats to get updated data
-        await loadUserChats();
+        await loadChats();
 
         let updatedChat = null;
 
         if (!currentChat && data.chatId) {
-          // New chat created
-          const newChat = chats.find((chat: Chat) => chat.id === data.chatId);
-          if (!newChat) {
-            // Chat not in current list, reload to get it
-            await loadUserChats();
-            const updatedChats = chats;
-            const foundChat = updatedChats.find(
-              (chat: Chat) => chat.id === data.chatId
-            );
-            if (foundChat) {
-              setCurrentChat(foundChat);
-              updatedChat = foundChat;
-            }
-          } else {
+          const updatedChats = await fetch(`${API_BASE_URL}/getchat/`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(getAuthRequestBody()),
+          }).then((res) => res.json());
+          const newChat = updatedChats.find(
+            (chat: Chat) => chat.id === data.chatId
+          );
+          if (newChat) {
             setCurrentChat(newChat);
             updatedChat = newChat;
           }
         } else if (currentChat && !currentChat.id.startsWith('temp-chat-')) {
-          // Continuing existing chat
-          const refreshedChat = chats.find(
+          const updatedChats = await fetch(`${API_BASE_URL}/getchat/`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(getAuthRequestBody()),
+          }).then((res) => res.json());
+          const newUpdatedChat = updatedChats.find(
             (chat: Chat) => chat.id === currentChat.id
           );
-          if (refreshedChat) {
-            setCurrentChat(refreshedChat);
-            updatedChat = refreshedChat;
+          if (newUpdatedChat) {
+            setCurrentChat(newUpdatedChat);
+            updatedChat = newUpdatedChat;
           }
         } else if (
           currentChat &&
           currentChat.id.startsWith('temp-chat-') &&
           data.chatId
         ) {
-          // Temp chat got real ID
-          const newChat = chats.find((chat: Chat) => chat.id === data.chatId);
+          const updatedChats = await fetch(`${API_BASE_URL}/getchat/`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(getAuthRequestBody()),
+          }).then((res) => res.json());
+          const newChat = updatedChats.find(
+            (chat: Chat) => chat.id === data.chatId
+          );
           if (newChat) {
             setCurrentChat(newChat);
             updatedChat = newChat;
           }
         }
 
-        // Auto-open PDF if AI message contains one
         if (updatedChat && updatedChat.conversations.length > 0) {
           const latestMessage =
             updatedChat.conversations[updatedChat.conversations.length - 1];
@@ -293,22 +286,8 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
             autoOpenPdf(latestMessage.message);
           }
         }
-      } else if (response.status === 401) {
-        // Unauthorized - authentication issue
-        const errorData = await response.json().catch(() => ({}));
-        setError(
-          errorData.error ||
-            'Unauthorized access. Please check your credentials.'
-        );
-        // Logout user
-        onLogout();
       } else {
-        const errorData = await response.json().catch(() => ({}));
-        setError(
-          errorData.error || 'Failed to send message. Please try again.'
-        );
-
-        // Revert UI changes on error
+        setError('Failed to send message. Please try again.');
         if (currentChat) {
           if (currentChat.id.startsWith('temp-chat-')) {
             setCurrentChat(null);
@@ -329,8 +308,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     } catch (error) {
       console.error('Send message failed:', error);
       setError('Network error. Please check your connection.');
-
-      // Revert UI changes on error
       if (currentChat) {
         if (currentChat.id.startsWith('temp-chat-')) {
           setCurrentChat(null);
@@ -403,8 +380,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
   };
 
   const renderMessage = (msg: Message) => {
-    const userData = getUserData();
-
     if (msg.role === 'AI') {
       const markdownLinkRegex = /\[([^\]]+)\]\(([^)]+)\)/g;
       const parts = [];
@@ -525,8 +500,6 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
     );
   };
 
-  const userData = getUserData();
-
   return (
     <div className="flex h-screen bg-background text-foreground">
       {/* Mobile overlay for sidebar */}
@@ -603,15 +576,12 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
             <div className="flex items-center gap-3">
               <Avatar className="h-8 w-8">
                 <AvatarFallback className="bg-sidebar-primary text-sidebar-primary-foreground text-sm">
-                  {userData.userName.charAt(0).toUpperCase()}
+                  {userName.charAt(0).toUpperCase()}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
                 <div className="text-sm font-medium text-sidebar-foreground truncate">
-                  {userData.userName}
-                </div>
-                <div className="text-xs text-sidebar-muted-foreground truncate">
-                  {userData.email}
+                  {userName}
                 </div>
               </div>
               <Button
@@ -683,7 +653,7 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
                               : 'bg-muted'
                           }>
                           {msg.role === 'user'
-                            ? userData.userName.charAt(0).toUpperCase()
+                            ? userName.charAt(0).toUpperCase()
                             : 'AI'}
                         </AvatarFallback>
                       </Avatar>
@@ -714,7 +684,7 @@ export default function ChatInterface({ onLogout }: ChatInterfaceProps) {
                           className="flex gap-4 flex-row-reverse">
                           <Avatar className="h-8 w-8 mt-1 flex-shrink-0">
                             <AvatarFallback className="bg-primary text-primary-foreground">
-                              {userData.userName.charAt(0).toUpperCase()}
+                              {userName.charAt(0).toUpperCase()}
                             </AvatarFallback>
                           </Avatar>
                           <div className="flex-1 space-y-2 text-right">
