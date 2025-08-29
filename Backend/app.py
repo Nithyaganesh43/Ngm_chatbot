@@ -387,11 +387,23 @@ def checkAuth(request):
         print(f"User creation error: {e}")
         return JsonResponse({"error": "Failed to create/get user"}, status=500)
 
+
+
+GLOBAL_QUERY_LIMIT = 100
+
+def check_global_query_limit():
+    total_queries = conversations_collection.count_documents({})
+    return total_queries < GLOBAL_QUERY_LIMIT
+
+
 @csrf_exempt
 def post_chat(request):
     if request.method == "OPTIONS":
         resp = HttpResponse(status=204)
         return add_cors_headers(request, resp)
+    if not check_global_query_limit():
+        return JsonResponse({"error": f"Global query limit reached ({GLOBAL_QUERY_LIMIT} messages max)"}, status=403)
+
     
     if request.method != 'POST': 
         return JsonResponse({"error":"POST required"}, status=405)
@@ -435,7 +447,9 @@ def continue_chat(request, chat_id):
     if request.method == "OPTIONS":
         resp = HttpResponse(status=204)
         return add_cors_headers(request, resp)
-    
+    if not check_global_query_limit():
+        return JsonResponse({"error": f"Global query limit reached ({GLOBAL_QUERY_LIMIT} messages max)"}, status=403)
+
     if request.method != 'POST': 
         return JsonResponse({"error":"POST required"}, status=405)
     
