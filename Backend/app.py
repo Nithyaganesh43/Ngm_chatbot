@@ -59,11 +59,12 @@ ALLOWED_ORIGINS = [
 
 def add_cors_headers(request, response: HttpResponse) -> HttpResponse:
     origin = request.META.get("HTTP_ORIGIN")
-    if origin in ALLOWED_ORIGINS:
+    if origin and origin in ALLOWED_ORIGINS:
         response["Access-Control-Allow-Origin"] = origin
     response["Access-Control-Allow-Methods"] = "GET, POST, PUT, DELETE, OPTIONS"
     response["Access-Control-Allow-Headers"] = "Content-Type, Authorization, X-API-Key"
     response["Access-Control-Allow-Credentials"] = "true"
+    response["Access-Control-Max-Age"] = "86400"  
     return response
 
 class User:
@@ -248,6 +249,11 @@ Dont repeat the same answer if asked multiple times.
  
 Use the following web-scraped data for reference:
 """ + webScrabedData() + """  
+
+IMPORTANT URL FORMAT: When providing document links, always use the format: (Title)[FullURL]
+Example: (Fee Structure 2020-21)[http://ngmc.org/wp-content/uploads/2021/04/Fee-Structure-2020-2021.pdf](http://ngmc.org/wp-content/uploads/2021/04/Fee-Structure-2020-2021.pdf)
+
+
 You may get 2 types of queries:
 1. General queries about NGMC college, courses, admissions, facilities, etc.
 for this you need to answer in a conversational manner.
