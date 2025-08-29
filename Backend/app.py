@@ -260,7 +260,7 @@ Use the following web-scraped data for reference:
 """ + webScrabedData() + """  
 
 IMPORTANT URL FORMAT: When providing document links, always use the format: (Title)[FullURL]
-Example: (Fee Structure 2020-21)[http://ngmc.org/wp-content/uploads/2021/04/Fee-Structure-2020-2021.pdf](http://ngmc.org/wp-content/uploads/2021/04/Fee-Structure-2020-2021.pdf)
+Example: [Fee Structure 2020-21](http://ngmc.org/wp-content/uploads/2021/04/Fee-Structure-2020-2021.pdf) 
 
 
 You may get 2 types of queries:

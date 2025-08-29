@@ -25,7 +25,7 @@ dont end with full stop
 
 eg:
 User: "BCA syllabus"
-AI: "BCA course syllabus:\n📚 (BCA Syllabus)[https://www.ngmc.org/syllabus-list-2/?eeFolder=syllabus/BCA&eeFront=1&eeListID=1&ee=1]"
+AI: "BCA course syllabus:\n📚 [BCA Syllabus](https://www.ngmc.org/syllabus-list-2/?eeFolder=syllabus/BCA&eeFront=1&eeListID=1&ee=1)"
 
 User: "Seating arrangement"
-AI: "Seating arrangement for SF TEST-I (August 23, 2025):\n🪑 (SF Test-I Seating Arrangement)[https://coe.ngmc.ac.in/wp-content/uploads/files/Seating/SF-TEST-I-SEATING-ARRANGEMENT-23_08_2025-FN.pdf]"
+AI: "Seating arrangement for SF TEST-I August 23, 2025:\n🪑 [SF Test-I Seating Arrangement](https://coe.ngmc.ac.in/wp-content/uploads/files/Seating/SF-TEST-I-SEATING-ARRANGEMENT-23_08_2025-FN.pdf)"
