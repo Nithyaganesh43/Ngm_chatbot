@@ -1,201 +1,27 @@
-Associate Professor-> ap
-Dept of Comp. Science
-Dr.R.Manickachezian
-Principal
-Dprt of Computer Science
-Dr.Antony Selvadoss Thanamani
-Ap
-Dr.R.Manickachezian
-Ap
-Mr.K.Srinivasan
-Ap
-Dr.Aruchamy Rajini
-Ap
-Dr. M.Malathi
-Ap
-Ms.M.Latha
-Ap
-Dr. M. Sakthi
-Ap
-Dr. R. Nandhakumar
-Ap
-Dr. R. Deepa
-Ap
-M. Dhavapriya
-Ap
-Dr. S. Sharmila
-Ap
-Ms. M. Meena Krithika
-Ap
-Ms. S. S. Shanthi
-Ap
-Mr. N. Arul Kumar
-Ap
-Dr. A. Kanagaraj
-Ap
-Ms. P. Jayapriya
-Ap
-Ms. G. Angayarkanni
-Ap
-Dr.M.Rathamani
-Ap
-Dr. A. Krishnakumar
-Ap
-Ms. R. Shiddharthy
-Ap
-UG Dprt of CSc with DA
-Dr. E. Rama Devi
-Ap
-Dr.K.Thilagam
-Ap
-UG Dprt of CSc with AI & ML
-Dr.S.Niraimathi
-Associate professor
-Mr. Vignesh. L
-Ap
-Dr.B.Azhagusundari
-Associate professor
-UG Dprt of Computer Applications
-Dr. K. Haridas
-Ap
-Dr. D. Umamaheswari
-Ap
-Dr.R.MalathiRavindran
-Associate professor
-Mr. S.DilipKumar
-Ap
-Dr.N.Divya
-Ap
-Mr.A.Muruganandham
-Ap
-Mr.D.Poobathi
-Ap
-Dr.T.Sumathi
-Ap
-Ms.B.Kousalya Devi
-Ap
-UG Dprt of Mathematics
-Mr S.Earnest Rajadurai
-Ap
-Mr.R.Abin Prakash
-Ap
-UG Dprt of Information Technology
-K.Vijayakumar
-Ap
-R.Sekar
-Ap
-C.R.Durga devi
-Ap
-B. Kalaiselvi
-Ap
-V.Prabavathi
-Ap
-UG Dprt of Commerce
-Dr.N.Bagyalakshmi
-Ap
-Ms.G.Nithya
-Ap
-Dr.S.Kaleeswari
-Ap
-Dr.N.Giri
-Ap
-Dr.Ahila.D
-Ap
-Ms.V.Ruba
-Ap
-Dr.V.Suresh kumar
-Ap
-Dr.T.S.Kavitha
-Ap
-Dr.R.Senthilkumar
-Ap
-UG Dprt of Business Administration
-Mr. D. Bhuvanendran
-Ap
-Dr. T. Manikandan
-Ap
-Ms. R. Visalakshi
-Ap
-Dr. U. Thaslim Ariff
-Ap
-Ms S.Kalamani
-Ap
-Ms. M. Manjuladevi
-Ap
-UG Dprt ofE-Commerce
-Dr.M.V.Sathiyabama
-Ap
-Dr.R.Vidwakalyani
-Ap
-Dr.B.Indirapriyadharshini
-Ap
-Dr.T.Kiruthika
-Ap
-Ms.M.Ragaprabha
-Ap
-UG Dprt of Commerce Finance
-Dr.G.Akilandeswari
-Ap
-Mrs.R.Amsaveni
-Ap
-Mrs.S.Kokilavizhi
-Ap
-Dr.E.Renuga
-Ap
-Ms.D.Divya
-Ap
-UG Dprt of English
-Mr. Koteeswaran . S
-Ap
-Ms. Amutha.G
-Ap
-UG Dprt of Computer Technology
-Dr.M.Rajasenathipathi
-Ap
-Ms.C. Keerthana
-Ap
-Ms.K.S. Leelavathi
-Ap
-Dr.R. Jayaprakash
-Ap
-Ms.A. Kalaivani
-Ap
-UG Dprt of Commerce Professional Accounting
-Dr. S. B. Gayathri
-Ap
-Dr. D. Rajasekaran
-Ap
-Dr. N. Sumathi
-Ap
-Ms. J. Madhubala
-Ap
-Dr.D.Padma
-Ap
-UG Dprt of Commerce Banking & Insurance
-Ms. M. Jeeva
-Ap
-Ms. A. Anandhiprabha
-Ap
-Ms. A. Gomathi
-Ap
-Ms. V. Poornima
-Ap
-Ms.M. Shanmugapriya
-Ap
-UG Dprt of Commerce Business Process Services
-Dr. M. Akilanayaki
-Ap
-Ms. T. Mohanasundari
-Ap
-Dr. T. Gurusamy
-Ap
-Dr.V. Meera
-Ap
-Dr. R. Sivarajan
-Ap
-Dean Academic
-Dr.S.Saravana Babu
-Dean Academic
-Dean Research
-Dr.S.Umapathy
-Dean Research
+Ap=Associate Professor
+
+CS Dept
+Principal: Dr.R.Manickachezian | Ap: Dr.Antony Selvadoss Thanamani, Mr.K.Srinivasan, Dr.Aruchamy Rajini, Dr.M.Malathi, Ms.M.Latha, Dr.M.Sakthi, Dr.R.Nandhakumar, Dr.R.Deepa, M.Dhavapriya, Dr.S.Sharmila, Ms.M.Meena Krithika, Ms.S.S.Shanthi, Mr.N.Arul Kumar, Dr.A.Kanagaraj, Ms.P.Jayapriya, Ms.G.Angayarkanni, Dr.M.Rathamani, Dr.A.Krishnakumar, Ms.R.Shiddharthy
+
+CS w/ DA: Dr.E.Rama Devi, Dr.K.Thilagam
+CS w/ AI&ML: Dr.S.Niraimathi, Mr.Vignesh.L, Dr.B.Azhagusundari
+CA: Dr.K.Haridas, Dr.D.Umamaheswari, Dr.R.MalathiRavindran, Mr.S.DilipKumar, Dr.N.Divya, Mr.A.Muruganandham, Mr.D.Poobathi, Dr.T.Sumathi, Ms.B.Kousalya Devi
+Math: Mr.S.Earnest Rajadurai, Mr.R.Abin Prakash
+IT: K.Vijayakumar, R.Sekar, C.R.Durga devi, B.Kalaiselvi, V.Prabavathi
+Commerce: Dr.N.Bagyalakshmi, Ms.G.Nithya, Dr.S.Kaleeswari, Dr.N.Giri, Dr.Ahila.D, Ms.V.Ruba, Dr.V.Suresh kumar, Dr.T.S.Kavitha, Dr.R.Senthilkumar
+BA: Mr.D.Bhuvanendran, Dr.T.Manikandan, Ms.R.Visalakshi, Dr.U.Thaslim Ariff, Ms.S.Kalamani, Ms.M.Manjuladevi
+E-Commerce: Dr.M.V.Sathiyabama, Dr.R.Vidwakalyani, Dr.B.Indirapriyadharshini, Dr.T.Kiruthika, Ms.M.Ragaprabha
+Com Finance: Dr.G.Akilandeswari, Mrs.R.Amsaveni, Mrs.S.Kokilavizhi, Dr.E.Renuga, Ms.D.Divya
+English: Mr.Koteeswaran.S, Ms.Amutha.G
+Com Tech: Dr.M.Rajasenathipathi, Ms.C.Keerthana, Ms.K.S.Leelavathi, Dr.R.Jayaprakash, Ms.A.Kalaivani
+Com Prof Acc: Dr.S.B.Gayathri, Dr.D.Rajasekaran, Dr.N.Sumathi, Ms.J.Madhubala, Dr.D.Padma
+Com B&I: Ms.M.Jeeva, Ms.A.Anandhiprabha, Ms.A.Gomathi, Ms.V.Poornima, Ms.M.Shanmugapriya
+Com BPS: Dr.M.Akilanayaki, Ms.T.Mohanasundari, Dr.T.Gurusamy, Dr.V.Meera, Dr.R.Sivarajan
+
+Deans
+Academic: Dr.S.Saravana Babu | Research: Dr.S.Umapathy
+
+eg:
+User: "Who is the principal?"
+AI: "The Principal of NGMC is Dr. R. Manickachezian from the Computer Science Department."
+

@@ -3,9 +3,7 @@ import json
 import re
 from typing import Dict, List, Optional
 from dotenv import load_dotenv 
-from openai import OpenAI
-import requests
-from bs4 import BeautifulSoup
+from openai import OpenAI 
 from pymongo import MongoClient
 from bson import ObjectId
 from datetime import datetime
@@ -238,16 +236,7 @@ def webScrabedData():
         else:
             contents+=f"[{filename} not found]\n"
     return contents.strip()
-
-def get_last_5_conversations_as_string():
-    conversations = Conversation.all()[:5]
-    conversations = reversed(conversations)
-
-    result=[]
-    for conv in conversations:
-        result.append(f"[{conv.role}] {conv.message}")
-    return "\n".join(result)
-
+ 
 ENHANCED_SYSTEM_PROMPT = """
 You are an intelligent AI assistant for Nallamuthu Gounder Mahalingam College (NGMC), Pollachi.
 Provide accurate, helpful, and engaging information about the college.
@@ -258,9 +247,7 @@ Always be helpful, accurate, and maintain a professional yet friendly tone.
 Dont repeat the same answer if asked multiple times.
  
 Use the following web-scraped data for reference:
-""" + webScrabedData() + """ 
-and the last 5 conversations for context:
-""" + get_last_5_conversations_as_string() + """
+""" + webScrabedData() + """  
 You may get 2 types of queries:
 1. General queries about NGMC college, courses, admissions, facilities, etc.
 for this you need to answer in a conversational manner.
@@ -280,24 +267,14 @@ LIMITS:
 def call_chatgpt(messages: List[Dict]) -> str:
     try:
         response = client.chat.completions.create(
-            model="gpt-4",
+            model="gpt-4o-mini",
             messages=messages,
             max_tokens=1200,
             temperature=0.7
         )
         reply = response.choices[0].message.content.strip()
 
-        usage = response.usage
-        usd_prompt = (usage.prompt_tokens / 1000) * 0.03
-        usd_completion = (usage.completion_tokens / 1000) * 0.06
-        total_usd = usd_prompt + usd_completion
-        rupees = round(total_usd * 84, 2)
-
-        print(
-            f"[LOG] Tokens used → prompt={usage.prompt_tokens}, "
-            f"completion={usage.completion_tokens}, total={usage.total_tokens}, "
-            f"cost≈₹{rupees}"
-        )
+       
 
         return reply
     except Exception as e:
@@ -587,87 +564,7 @@ urlpatterns = [
     path('getchat/', get_chats),
     path('getuserchats/', get_user_chats),
 ]
-
-headers = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"
-}
-
-all_links = {}
-
-url = "https://coe.ngmc.ac.in/exam-schedule/"
-response = requests.get(url, headers=headers)
-soup = BeautifulSoup(response.text, "html.parser")
-exam_links = {}
-for a_tag in soup.find_all("a"):
-    href = a_tag.get("href")
-    if href and href.lower().endswith(".pdf"):
-        if href.startswith("/"):
-            href = f"https://coe.ngmc.ac.in{href}"
-        file_name = os.path.basename(href)
-        key_name = os.path.splitext(file_name)[0]
-        exam_links[key_name] = href
-all_links["exam_schedule"] = exam_links
-
-url = "https://www.ngmc.org/admissions/fee-structure/"
-response = requests.get(url, headers=headers)
-soup = BeautifulSoup(response.text, "html.parser")
-fee_links = {}
-for a_tag in soup.find_all("a"):
-    href = a_tag.get("href")
-    if href and href.lower().endswith(".pdf"):
-        if href.startswith("/"):
-            href = f"https://www.ngmc.org{href}"
-        file_name = os.path.basename(href)
-        key_name = os.path.splitext(file_name)[0]
-        fee_links[key_name] = href
-all_links["fee_structure"] = fee_links
-
-url = "https://coe.ngmc.ac.in/seating-arrangements/"
-response = requests.get(url, headers=headers)
-soup = BeautifulSoup(response.text, "html.parser")
-seating_links = {}
-for a_tag in soup.find_all("a"):
-    if "open" in a_tag.text.lower():
-        link = a_tag.get("href")
-        if link:
-            if link.startswith("/"):
-                link = f"https://coe.ngmc.ac.in{link}"
-            file_name = os.path.basename(link)
-            key_name = os.path.splitext(file_name)[0]
-            seating_links[key_name] = link
-all_links["seating_arrangements"] = seating_links
-
-url = "https://www.ngmc.org/syllabus-list-2/"
-response = requests.get(url, headers=headers)
-soup = BeautifulSoup(response.text, "html.parser")
-syllabus_links = {}
-for a_tag in soup.find_all("a"):
-    if "open" in a_tag.text.lower():
-        link = a_tag.get("href")
-        if link:
-            name_tag = a_tag.find_previous(lambda tag: tag.name in ["h3", "h4", "span", "strong"] and tag.text.strip())
-            name = name_tag.text.strip() if name_tag else f"link_{len(syllabus_links)+1}"
-            if link.startswith("/"):
-                link = f"https://www.ngmc.org{link}"
-            syllabus_links[name] = link
-all_links["syllabus"] = syllabus_links
-
-with open("ngmc_college_links.json", "w", encoding="utf-8") as f:
-    json.dump(all_links, f, indent=4, ensure_ascii=False)
-
-print(f"Saved data: Exam({len(exam_links)}), Fees({len(fee_links)}), Seating({len(seating_links)}), Syllabus({len(syllabus_links)}) → ngmc_college_links.json")
-
-def clean_json_to_txt(json_file:str, txt_file:str):
-    with open(json_file,"r",encoding="utf-8") as f:
-        content=f.read()
-    for ch in ['[',']','"','{','}',',']:
-        content=content.replace(ch,'')
-    with open(txt_file,"w",encoding="utf-8") as f:
-        f.write(content.strip())
-    print(f"Cleaned content saved to {txt_file}")
-
-clean_json_to_txt("ngmc_college_links.json","links.txt")
-
+ 
 if __name__ == '__main__': 
     from django.core.management.commands.runserver import Command as runserver
     runserver.default_addr = "0.0.0.0"
