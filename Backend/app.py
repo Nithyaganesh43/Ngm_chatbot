@@ -223,7 +223,16 @@ def ensure_tables():
 
 ensure_tables()
 
-client = OpenAI(api_key=os.environ.get("CHAT_GPT_API"))
+# DEEPSEEK API CONFIGURATION
+# Update the OpenAI client to use DeepSeek API
+DEEPSEEK_API_KEY = os.environ.get("DEEP_SEEK_API_KEY")
+DEEPSEEK_BASE_URL = "https://api.deepseek.com/v1"  # Verify this in DeepSeek documentation
+
+# Initialize the OpenAI client with DeepSeek configuration
+client = OpenAI(
+    api_key=DEEPSEEK_API_KEY,
+    base_url=DEEPSEEK_BASE_URL
+)
 
 def webScrabedData():
     current_dir=os.path.dirname(os.path.abspath(__file__))
@@ -270,21 +279,19 @@ LIMITS:
 - "title" should be a brief summary of the reply, ideally under 4 words.
 """ 
 
-def call_chatgpt(messages: List[Dict]) -> str:
+def call_deepseek(messages: List[Dict]) -> str:
     try:
+        # Use the appropriate DeepSeek model name
         response = client.chat.completions.create(
-            model="gpt-4o-mini",
+            model="deepseek-chat",  # Verify the correct model name in DeepSeek docs
             messages=messages,
             max_tokens=1200,
             temperature=0.7
         )
         reply = response.choices[0].message.content.strip()
-
-       
-
         return reply
     except Exception as e:
-        print(f"OpenAI API Error: {e}")
+        print(f"DeepSeek API Error: {e}")
         return "I'm sorry, I'm having trouble processing your request right now. Please try again later."
 
 def extract_json_from_response(resp: str) -> Dict:
@@ -406,8 +413,8 @@ def post_chat(request):
     
     prompt = f"{ENHANCED_SYSTEM_PROMPT}\nUser Query: {user_message}\nOutput JSON with reply and title only"
     messages = [{"role":"system","content":prompt},{"role":"user","content":user_message}]
-    gpt_resp = call_chatgpt(messages)
-    parsed = extract_json_from_response(gpt_resp)
+    deepseek_resp = call_deepseek(messages)
+    parsed = extract_json_from_response(deepseek_resp)
     
     chat = Chat.create(title=parsed['title'], user_id=user.id)
     Conversation.bulk_create([
@@ -467,8 +474,8 @@ def continue_chat(request, chat_id):
     
     prompt = f"{ENHANCED_SYSTEM_PROMPT}\nUser Query: {user_message}\nOutput JSON with reply only"
     messages = [{"role":"system","content":prompt}] + conv_history
-    gpt_resp = call_chatgpt(messages)
-    parsed = extract_json_from_response(gpt_resp)
+    deepseek_resp = call_deepseek(messages)
+    parsed = extract_json_from_response(deepseek_resp)
      
     chat.save()
     Conversation.bulk_create([
@@ -517,6 +524,7 @@ def get_chats(request):
     
     resp = JsonResponse(chats_data, safe=False)
     return add_cors_headers(request, resp)
+
 @csrf_exempt
 def get_user_chats(request):
     if request.method == "OPTIONS":
