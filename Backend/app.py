@@ -389,7 +389,8 @@ def checkAuth(request):
 
 
 
-GLOBAL_QUERY_LIMIT = 100
+GLOBAL_QUERY_LIMIT = 100 
+
 
 def check_global_query_limit():
     total_queries = conversations_collection.count_documents({})
