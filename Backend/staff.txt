@@ -5,6 +5,38 @@ Principal: Dr.R.Manickachezian | Ap: Dr.Antony Selvadoss Thanamani, Mr.K.Sriniva
 LIST OF FULL-TIME TEACHERS
 
 S.No	Name of the Full-time Faculty	Designation	Department
+
+bca faculty list 
+
+Dr.K. Haridas
+ M.C.A.,M.Phil.,Ph.D.
+ Associate Professor & Head
+ Dr.R. Malathi Ravindran
+ M.C.A.,M.Phil.,B.Ed.,Ph.D.
+ Associate Professor
+
+Mr.S. Dilip Kumar
+ M.C.A.,M.Phil.,(Ph.D.)
+ Assistant Professor
+
+Dr.T. Sumadhi
+ MCA.,M.Phil.,Ph.D.
+ Assistant Professor
+
+Dr.S. Sathiyapriya
+ M.Sc.,M.Ed.,Ph.D.
+ Assistant Professor
+
+Mrs.N. Amirthagowri
+ M.Sc.,M.phil.,
+ Assistant Professor
+
+
+Mrs.A. Priyadharsini
+ MCA.,MPhil.,
+ Assistant Professor
+
+
 1.	Dr.R.Manickachezian	Principal	Dept of Comp. Science
 2	Dr.P.Maheshwari	Associate Professor	dprt of Tamil
 3	Dr.K.Dhanalakshmi	ap	dprt of Tamil
