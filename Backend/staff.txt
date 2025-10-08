@@ -7,7 +7,7 @@ LIST OF FULL-TIME TEACHERS
 S.No	Name of the Full-time Faculty	Designation	Department
 
 bca faculty list 
-
+ UG dprt of Computer Applications
 Dr.K. Haridas
  M.C.A.,M.Phil.,Ph.D.
  Associate Professor & Head
@@ -157,15 +157,6 @@ Mrs.A. Priyadharsini
 118	Dr.S.Niraimathi	Associate professor	UG dprt of CSc with AI & ML
 119	Mr. Vignesh. L	ap	UG dprt of CSc with AI & ML
 120	Dr.B.Azhagusundari	Associate professor	UG dprt of CSc with AI & ML
-121	Dr. K. Haridas	Associate Professor	UG dprt of Computer Applications
-122	Dr. D. Umamaheswari	ap	UG dprt of Computer Applications
-123	Dr.R.MalathiRavindran	Associate professor	UG dprt of Computer Applications
-124	Mr. S.DilipKumar	ap	UG dprt of Computer Applications
-125	Dr.N.Divya	ap	UG dprt of Computer Applications
-126	Mr.A.Muruganandham	ap	UG dprt of Computer Applications
-127	Mr.D.Poobathi	ap	UG dprt of Computer Applications
-128	Dr.T.Sumathi	ap	UG dprt of Computer Applications
-129	Ms.B.Kousalya Devi	ap	UG dprt of Computer Applications
 130	Mr S.Earnest Rajadurai	ap	UG dprt of Mathematics
 131	Mr.R.Abin Prakash	ap	UG dprt of Mathematics
 132	K.Vijayakumar	ap	UG dprt of Information Technology
