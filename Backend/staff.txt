@@ -2,26 +2,265 @@ Ap=Associate Professor
 
 CS Dept
 Principal: Dr.R.Manickachezian | Ap: Dr.Antony Selvadoss Thanamani, Mr.K.Srinivasan, Dr.Aruchamy Rajini, Dr.M.Malathi, Ms.M.Latha, Dr.M.Sakthi, Dr.R.Nandhakumar, Dr.R.Deepa, M.Dhavapriya, Dr.S.Sharmila, Ms.M.Meena Krithika, Ms.S.S.Shanthi, Mr.N.Arul Kumar, Dr.A.Kanagaraj, Ms.P.Jayapriya, Ms.G.Angayarkanni, Dr.M.Rathamani, Dr.A.Krishnakumar, Ms.R.Shiddharthy
+LIST OF FULL-TIME TEACHERS
 
-CS w/ DA: Dr.E.Rama Devi, Dr.K.Thilagam
-CS w/ AI&ML: Dr.S.Niraimathi, Mr.Vignesh.L, Dr.B.Azhagusundari
-CA: Dr.K.Haridas, Dr.D.Umamaheswari, Dr.R.MalathiRavindran, Mr.S.DilipKumar, Dr.N.Divya, Mr.A.Muruganandham, Mr.D.Poobathi, Dr.T.Sumathi, Ms.B.Kousalya Devi
-Math: Mr.S.Earnest Rajadurai, Mr.R.Abin Prakash
-IT: K.Vijayakumar, R.Sekar, C.R.Durga devi, B.Kalaiselvi, V.Prabavathi
-Commerce: Dr.N.Bagyalakshmi, Ms.G.Nithya, Dr.S.Kaleeswari, Dr.N.Giri, Dr.Ahila.D, Ms.V.Ruba, Dr.V.Suresh kumar, Dr.T.S.Kavitha, Dr.R.Senthilkumar
-BA: Mr.D.Bhuvanendran, Dr.T.Manikandan, Ms.R.Visalakshi, Dr.U.Thaslim Ariff, Ms.S.Kalamani, Ms.M.Manjuladevi
-E-Commerce: Dr.M.V.Sathiyabama, Dr.R.Vidwakalyani, Dr.B.Indirapriyadharshini, Dr.T.Kiruthika, Ms.M.Ragaprabha
-Com Finance: Dr.G.Akilandeswari, Mrs.R.Amsaveni, Mrs.S.Kokilavizhi, Dr.E.Renuga, Ms.D.Divya
-English: Mr.Koteeswaran.S, Ms.Amutha.G
-Com Tech: Dr.M.Rajasenathipathi, Ms.C.Keerthana, Ms.K.S.Leelavathi, Dr.R.Jayaprakash, Ms.A.Kalaivani
-Com Prof Acc: Dr.S.B.Gayathri, Dr.D.Rajasekaran, Dr.N.Sumathi, Ms.J.Madhubala, Dr.D.Padma
-Com B&I: Ms.M.Jeeva, Ms.A.Anandhiprabha, Ms.A.Gomathi, Ms.V.Poornima, Ms.M.Shanmugapriya
-Com BPS: Dr.M.Akilanayaki, Ms.T.Mohanasundari, Dr.T.Gurusamy, Dr.V.Meera, Dr.R.Sivarajan
-
-Deans
-Academic: Dr.S.Saravana Babu | Research: Dr.S.Umapathy
-
-eg:
-User: "Who is the principal?"
-AI: "The Principal of NGMC is Dr. R. Manickachezian from the Computer Science Department."
-
+S.No	Name of the Full-time Faculty	Designation	Department
+1.	Dr.R.Manickachezian	Principal	Dept of Comp. Science
+2	Dr.P.Maheshwari	Associate Professor	dprt of Tamil
+3	Dr.K.Dhanalakshmi	ap	dprt of Tamil
+4	Dr.A.Mahalakshmi	ap	dprt of Tamil
+5	Dr P.Aruljothi	ap	dprt of Tamil
+6	Dr. A.Mahabobu	ap	dprt of Tamil
+7	Dr.P.Maheshwari	ap	dprt of Tamil
+8	Dr.S.Muthukumaravel	Associate Professor	dprt of English
+9	Dr.Suja Mathew	Associate Professor	dprt of English
+10	Dr.A.Srividhya	ap	dprt of English
+11	Dr.S.Mariammal	ap	dprt of English
+12	Ms.G.Devikarpagam	ap	dprt of English
+13	Ms.T.V.Sri Vaishnavi Devi	ap	dprt of English
+14	Mr.S.Lakshmanan	ap	dprt of English
+15	Dr.M.Sangeetha	ap	dprt of English
+16	Dr. K.S.Parimaladevi	ap	dprt of English
+17	Mr. K.M.Mohankumar	ap	dprt of English
+18	Mr. M.Lakshmanan	ap	dprt of English
+19	Ms. Greeshmavijay	ap	dprt of English
+20	Dr.K.Mangayarkarasi	ap	dprt of History
+21	Mr.G.Ramanathan	ap	dprt of History
+22	Dr. R.Somasundaram	ap	dprt of History
+23	Ms. P.Gayathri	ap	dprt of History
+24	Dr.P.P. Ramya	ap	dprt of History
+25	Dr.P.Krishnathulasimani	Associate Professor	dprt of Economics
+26	Mr.N.Anbuarasu	ap	dprt of Economics
+27	Mr.K.Murugavelu	ap	dprt of Economics
+28	Dr.Nirrmala sathish	ap	dprt of Economics
+29	Dr S.Padmasundari	ap	dprt of Economics
+30	Dr.P.Bruntha	Associate Professor	PG & Research dprt of Commerce
+31	Dr.R.Manikandan	Associate Professor	PG & Research dprt of Commerce
+32	Dr.S.Shanmugapriya	Associate Professor	PG & Research dprt of Commerce
+33	Dr.M.Chithirai Selvan	ap	PG & Research dprt of Commerce
+34	Ms. G.Gnanaselvi	ap	PG & Research dprt of Commerce
+35	Ms. P.V.Nandhini	ap	PG & Research dprt of Commerce
+36	Ms. P.Karthika	ap	PG & Research dprt of Commerce
+37	Ms. S.Mahalakshmi	ap	PG & Research dprt of Commerce
+38	Ms. P.Anitha	ap	PG & Research dprt of Commerce
+39	Dr.V.Inthumathi	Associate Professor	PG & Research dprt of Mathematics
+40	Dr.J.Jayasudha	Associate Professor	PG & Research dprt of Mathematics
+41	Dr.R.Santhi	Associate Professor	PG & Research dprt of Mathematics
+42	Dr.V.Chitra	Associate Professor	PG & Research dprt of Mathematics
+43	Dr.S.Sivasankar	Associate Professor	PG & Research dprt of Mathematics
+44	Mr.P.Siravanan	ap	PG & Research dprt of Mathematics
+45	Dr.S.Kaleeswari	ap	PG & Research dprt of Mathematics
+46	Ms. A.Gnanasoundari	ap	PG & Research dprt of Mathematics
+47	Dr M.Maheswari	ap	PG & Research dprt of Mathematics
+48	Dr N.Selvanayaki	ap	PG & Research dprt of Mathematics
+49	Dr.T.E.Manjulavalli	Associate Professor	 dprt of Physics
+50	Ms.N.Revathi	ap	 dprt of Physics
+51	Dr.M.Karthika	ap	 dprt of Physics
+52	Dr.S.Shanmugapriya	ap	 dprt of Physics
+53	Dr.A.Sureshkumar	ap	 dprt of Physics
+54	Ms. S.Yogeshwari	ap	 dprt of Physics
+55	Mr. T.Ponraj	ap	 dprt of Physics
+56	Ms. M.Gayathri	ap	 dprt of Physics
+57	Ms. A.G.Kannan	ap	 dprt of Physics
+58	Dr. V. Saravanan	ap	 dprt of Physics
+59	Dr. K. Somasundaram	ap	 dprt of Physics
+60	Dr.Indhumathy Ramasamy	ap	 dprt of Chemistry
+61	Dr.M.Amutha	Associate Professor	 dprt of Chemistry
+62	Dr T.Gowrani	ap	 dprt of Chemistry
+63	Ms. R.Sudha	ap	 dprt of Chemistry
+64	Dr M.Selladurai	ap	 dprt of Chemistry
+65	Dr N.Neelakandeswari	ap	 dprt of Chemistry
+66	Dr.R.Kannan	Associate Professor	dprt of Botany
+67	Dr.M.Latha Isabel	ap	dprt of Botany
+68	Dr.A.Logamadevi	Associate Professor	dprt of Botany
+69	Dr.K.Rajalakshmi	Associate Professor	dprt of Botany
+70	Dr.E.Neelamathi	ap	dprt of Botany
+71	Dr.S.Somasundaram	ap	dprt of Zoology
+72	Dr M.Durairaju	ap	dprt of Zoology
+73	Dr. S.Mariselvi	ap	dprt of Zoology
+74	Ms. S.Jayalakshmi	ap	dprt of Zoology
+75	Dr. S.Christopher	ap	dprt of Zoology
+76	Dr.Antony Selvadoss Thanamani	Associate Professor	dprt of Computer Science
+77	Dr.R.Manickachezian	Associate Professor	dprt of Computer Science
+78	Mr.K.Srinivasan	Associate Professor	dprt of Computer Science
+79	Dr.Aruchamy Rajini	ap	dprt of Computer Science
+80	Dr. M.Malathi	ap	dprt of Computer Science
+81	Ms.M.Latha	ap	dprt of Computer Science
+82	Dr. T.Parameshwari	ap	dprt of Tamil Language
+83	Dr. T.Geethanjali	ap	dprt of Tamil Language
+84	Dr. .R.Vishnupriya	ap	dprt of Tamil Language
+85	Dr.M.Chitrakala	ap	dprt of Tamil Language
+86	Dr.N. Prakash	ap	dprt of Tamil Language
+87	Dr..N.Jayasudha	ap	dprt of Tamil Language
+88	Dr. R. Jayanthi	ap	dprt of Tamil Language
+89	Prof. R. Suriya	ap	dprt of Tamil Language
+90	Dr. R. Dhivya	ap	dprt of Tamil Language
+91	Dr.P.Karthick	ap	dprt of Tamil Language
+92	Ms. D. Dhirowpathi	ap	 dprt of Hindi Language
+93	Dr.N.RADHA	ap	dprt of English Language
+94	Dr.R.Kiruthiga	ap	dprt of English Language
+95	Dr.P.Kalaivani	ap	dprt of English Language
+96	Ms.P.Mariammal	ap	dprt of English Language
+97	Ms.M.Nandhagopu	ap	dprt of English Language
+98	Ms.A.Velumani	ap	dprt of English Language
+99	Dr.T.Suriyaprabha	ap	dprt of English Language
+100	Ms.G.Mahalakshmi	ap	dprt of English Language
+101	Ms.Saranya Devi.M	ap	dprt of English Language
+102	Dr. M. Sakthi	Associate Professor	dprt of Computer Science
+103	Dr. R. Nandhakumar	ap	dprt of Computer Science
+104	Dr. R. Deepa	ap	dprt of Computer Science
+105	M. Dhavapriya	ap	dprt of Computer Science
+106	Dr. S. Sharmila	ap	dprt of Computer Science
+107	Ms. M. Meena Krithika	ap	dprt of Computer Science
+108	Ms. S. S. Shanthi	ap	dprt of Computer Science
+109	Mr. N. Arul Kumar	ap	dprt of Computer Science
+110	Dr. A. Kanagaraj	ap	dprt of Computer Science
+111	Ms. P. Jayapriya	ap	dprt of Computer Science
+112	Ms. G. Angayarkanni	ap	dprt of Computer Science
+113	Dr.M.Rathamani	ap	dprt of Computer Science
+114	Dr. A. Krishnakumar	ap	dprt of Computer Science
+115	Ms. R. Shiddharthy	ap	dprt of Computer Science
+116	Dr. E. Rama Devi	ap	UG dprt of CSc with DA
+117	Dr.K.Thilagam	ap	UG dprt of CSc with DA
+118	Dr.S.Niraimathi	Associate professor	UG dprt of CSc with AI & ML
+119	Mr. Vignesh. L	ap	UG dprt of CSc with AI & ML
+120	Dr.B.Azhagusundari	Associate professor	UG dprt of CSc with AI & ML
+121	Dr. K. Haridas	Associate Professor	UG dprt of Computer Applications
+122	Dr. D. Umamaheswari	ap	UG dprt of Computer Applications
+123	Dr.R.MalathiRavindran	Associate professor	UG dprt of Computer Applications
+124	Mr. S.DilipKumar	ap	UG dprt of Computer Applications
+125	Dr.N.Divya	ap	UG dprt of Computer Applications
+126	Mr.A.Muruganandham	ap	UG dprt of Computer Applications
+127	Mr.D.Poobathi	ap	UG dprt of Computer Applications
+128	Dr.T.Sumathi	ap	UG dprt of Computer Applications
+129	Ms.B.Kousalya Devi	ap	UG dprt of Computer Applications
+130	Mr S.Earnest Rajadurai	ap	UG dprt of Mathematics
+131	Mr.R.Abin Prakash	ap	UG dprt of Mathematics
+132	K.Vijayakumar	ap	UG dprt of Information Technology
+133	R.Sekar	ap	UG dprt of Information Technology
+134	C.R.Durga devi	ap	UG dprt of Information Technology
+135	B. Kalaiselvi	ap	UG dprt of Information Technology
+136	V.Prabavathi	ap	UG dprt of Information Technology
+137	Dr.N.Bagyalakshmi	Associate Professor	UG dprt of Commerce
+138	Ms.G.Nithya	ap	UG dprt of Commerce
+139	Dr.S.Kaleeswari	ap	UG dprt of Commerce
+140	Dr.N.Giri	ap	UG dprt of Commerce
+141	Dr.Ahila.D	ap	UG dprt of Commerce
+142	Ms.V.Ruba	ap	UG dprt of Commerce
+143	Dr.V.Suresh kumar	Associate Professor	UG dprt of Commerce
+144	Dr.T.S.Kavitha	Associate Professor	UG dprt of Commerce
+145	Dr.R.Senthilkumar	ap	UG dprt of Commerce
+146	Mr. D. Bhuvanendran	ap	UG dprt of Business Administration
+147	Dr. T. Manikandan	ap	UG dprt of Business Administration
+148	Ms. R. Visalakshi	ap	UG dprt of Business Administration
+149	Dr. U. Thaslim Ariff	ap	UG dprt of Business Administration
+150	Ms S.Kalamani	ap	UG dprt of Business Administration
+151	Ms. M. Manjuladevi	ap	UG dprt of Business Administration
+152	Dr.M.V.Sathiyabama	Associate Professor	UG dprt of  E-Commerce
+153	Dr.R.Vidwakalyani	ap	UG dprt of  E-Commerce
+154	Dr.B.Indirapriyadharshini	ap	UG dprt of  E-Commerce
+155	Dr.T.Kiruthika	ap	UG dprt of  E-Commerce
+156	Ms.M.Ragaprabha	ap	UG dprt of  E-Commerce
+157	Dr.G.Akilandeswari	Associate Professor	UG dprt of Commerce Finance
+158	Mrs.R.Amsaveni	ap	UG dprt of Commerce Finance
+159	Mrs.S.Kokilavizhi	ap	UG dprt of Commerce Finance
+160	Dr.E.Renuga	ap	UG dprt of Commerce Finance
+161	Ms.D.Divya	ap	UG dprt of Commerce Finance
+162	Mr. Koteeswaran . S	ap	UG dprt of English
+163	Ms. Amutha.G	ap	UG dprt of English
+164	Dr.M.Rajasenathipathi	Associate Professor	UG dprt of Computer Technology
+165	Ms.C. Keerthana	ap	UG dprt of Computer Technology
+166	Ms.K.S. Leelavathi	ap	UG dprt of Computer Technology
+167	Dr.R. Jayaprakash	ap	UG dprt of Computer Technology
+168	Ms.A. Kalaivani	ap	UG dprt of Computer Technology
+169	Dr. S. B. Gayathri	Associate Professor	UG dprt of Commerce – Professional Accounting
+170	Dr. D. Rajasekaran	ap	UG dprt of Commerce – Professional Accounting
+171	Dr. N. Sumathi	ap	UG dprt of Commerce – Professional Accounting
+172	Ms. J. Madhubala	ap	UG dprt of Commerce – Professional Accounting
+173	Dr.D.Padma	Associate Professor	UG dprt of Commerce – Professional Accounting
+174	Ms. M. Jeeva	Associate Professor	UG dprt of Commerce – Banking & Insurance
+175	Ms. A. Anandhiprabha	ap	UG dprt of Commerce – Banking & Insurance
+176	Ms. A. Gomathi	ap	UG dprt of Commerce – Banking & Insurance
+177	Ms. V. Poornima	ap	UG dprt of Commerce – Banking & Insurance
+178	Ms.M. Shanmugapriya	ap	UG dprt of Commerce – Banking & Insurance
+179	Dr. M. Akilanayaki	ap	UG dprt of Commerce – Business Process Services
+180	Ms. T. Mohanasundari	ap	UG dprt of Commerce – Business Process Services
+181	Dr. T. Gurusamy	ap	UG dprt of Commerce – Business Process Services
+182	Dr.V. Meera	Associate Professor	UG dprt of Commerce – Business Process Services
+183	Dr. R. Sivarajan	ap	UG dprt of Commerce – Business Process Services
+184	Dr. T.Rajkumar	Associate Professor	PG dprt of Tamil
+185	Dr. S.Selvakumar	ap	PG dprt of Tamil
+186	Dr. A.Sivanartselvi	ap	PG dprt of Tamil
+187	Dr. T.Pushparani	ap	PG dprt of Tamil
+188	Dr. V.Parimalam	ap	PG dprt of Tamil
+189	Dr.M.Gayathri	ap	PG dprt of Tamil
+190	Dr.P.Prathap	ap	PG dprt of Tamil
+191	T. Sumithra	ap	PG dprt of English
+192	R. Sudha	ap	PG dprt of English
+193	P. Dhanagopalan	ap	PG dprt of English
+194	P. A. Francia	ap	PG dprt of English
+195	Dr.K.Poonkodi	ap	PG dprt of Chemistry
+196	Mrs.K.Vimaladevi	ap	PG dprt of Chemistry
+197	Mrs. R. Mini	ap	PG dprt of Chemistry
+198	Dr.V.Prabhu	ap	PG dprt of Chemistry
+199	Mrs.M.Anusuya	ap	PG dprt of Chemistry
+200	Dr. M. Velayutham Pillai	ap	PG dprt of Chemistry
+201	Dr. R. Rakkimuthu	ap	PG dprt of Botany
+202	Dr. P. Sathishkumar	ap	PG dprt of Botany
+203	Dr. A.M. Anandakumar	ap	PG dprt of Botany
+204	Mrs. D. Sowmiya	ap	PG dprt of Botany
+205	Dr G Vignesh	Associate Professor	PG & UG  Commerce –  International Business
+206	Dr N. Bhuvaneshkumar	Associate Professor	PG & UG  Commerce –  International Business
+207	Mr. B. Madhankumar	ap	PG & UG  Commerce –  International Business
+208	Mr. M. Prem	ap	PG & UG  Commerce –  International Business
+209	Dr. B. Rohini	ap	PG & UG  Commerce –  International Business
+210	Dr. R. Gayathri	Associate Professor	PG & UG  Commerce –  International Business
+211	Dr. N. Ponsabariraj	ap	PG & UG  Commerce –  International Business
+212	Mrs. P. Sudha	ap	PG & UG  Commerce –  International Business
+213	Ms. S. Pratheepa	ap	PG & UG  Commerce –  International Business
+214	Dr.P.Anitha	ap	PG dprt of Commerce with Computer Applications
+215	Dr.S.Poongodi	 ap	PG dprt of Commerce with Computer Applications
+216	Dr.P.Jayanthi	 ap	PG dprt of Commerce with Computer Applications
+217	Dr.P.Archanaa	 ap	PG dprt of Commerce with Computer Applications
+218	Dr.T.Vijayachithra	 ap	PG dprt of Commerce with Computer Applications
+219	Dr.P.Gomathi Devi	 ap	PG dprt of Commerce with Computer Applications
+220	Dr.M.Deepa	 ap	PG dprt of Commerce with Computer Applications
+221	Ms.M.Shanmugapriya	 ap	PG dprt of Commerce with Computer Applications
+222	Ms.R.Ramya	 ap	PG dprt of Commerce with Computer Applications
+223	Mr.A.Prakalathan	 ap	PG dprt of Commerce with Computer Applications
+224	Ms. D. Saranya	 ap	PG dprt of Commerce with Computer Applications
+225	Ms.M.Nirmala	 ap	PG dprt of Commerce with Computer Applications
+226	Ms.P.Divyabharathi	 ap	PG dprt of Commerce with Computer Applications
+227	Ms.M.Gayathri	 ap	PG dprt of Commerce with Computer Applications
+228	Ms.M.Kesavy	 ap	PG dprt of Commerce with Computer Applications
+229	Ms.R.Subhasangeetha	 ap	PG dprt of Commerce with Computer Applications
+230	Mr.S.Rajagopalan	 ap	PG dprt of Commerce with Computer Applications
+231	Ms.Muthukannu	ap	PG dprt of Commerce with Computer Applications
+232	Dr.L.Ranjit	ap	UG & PG dprt of Social work
+233	Ms.T.Sivaranjane	ap	UG & PG dprt of Social work
+234	Mr.S.Vignesh Kumar	ap	UG & PG dprt of Social work
+235	Ms.B.V.Nithi Varshini Devi	ap	UG & PG dprt of Social work
+236	Ms.A.Nandhini	ap	UG & PG dprt of Social work
+237	Ms. S.Jeyalakshmi	ap	dprt of Human Excellence
+238	Thiru. N.Panneerselvam	ap	dprt of Human Excellence
+239	Dr.P.Veerasithi vinayagan	ap	dprt of Human Excellence
+240	Ms. S.Shanmugavadivu	ap	dprt of Human Excellence
+241	Thiru. V.Settu	ap	dprt of Human Excellence
+242	Ms. S.Maheswari	ap	dprt of Human Excellence
+243	Ms. P.Padma	ap	dprt of Human Excellence
+244	Ms. D.Gnana soundari	ap	dprt of Human Excellence
+245	Ms. K.Santhi	ap	dprt of Human Excellence
+246	Ms. S.Jagadambal	ap	dprt of Human Excellence
+247	Mr. Ganeshan P. Arumugam	ap	Academy for Professional Development
+248	Mr.M.Lingaraj	ap	Academy for Professional Development
+249	Ms. E. Gayathri	ap	Academy for Professional Development
+250	Dr R.Ashok Kumar	Physical Director	Physical Education
+251	Ms. C. Bhuvaneswari	Assistant Physical Director	Physical Education
+252	Mr. P. Kithiyon	Assistant Physical Director	Physical Education
+253	Mr.R. Prabakaran	Training & Placement officer	Placement & Training Officer
+254	Dr S.Vijayakumar	Librarian	Library
+255	Mr.P.Peter	Fluency Trainer	Fluency
+256	Mr.M.Henry Narwil	ap	Fluency
+257	Dr.S.Saravana Babu	Dean – Academic	Dean – Academic
+258	Dr.S.Umapathy	Dean – Research	Dean – Research
+ 
